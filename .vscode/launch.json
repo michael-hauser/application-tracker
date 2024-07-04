@@ -6,14 +6,40 @@
         "request": "launch",
         "name": "Debug TypeScript",
         "preLaunchTask": "tsc: build - tsconfig.json",
-        "program": "${workspaceFolder}/server/src/index.ts",
+        "program": "${workspaceFolder}/server/src/server.ts",
         "outFiles": [
           "${workspaceFolder}/server/dist/**/*.js"
         ],
         "sourceMaps": true,
         "skipFiles": ["<node_internals>/**"],
         "cwd": "${workspaceFolder}/server"  // Set the current working directory to /server
-      }
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Jest All Tests",
+        "cwd": "${workspaceFolder}/server",  // Set the current working directory to /server
+        "program": "${workspaceFolder}/server/node_modules/.bin/jest",
+        "args": [
+            "--runInBand",
+            "--config",
+            "jest.config.js",
+            "--verbose",
+            "--detectOpenHandles"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "disableOptimisticBPs": true,
+        "windows": {
+            "program": "${workspaceFolder}/server/node_modules/jest/bin/jest",
+        },
+        "osx": {
+            "program": "${workspaceFolder}/server/node_modules/jest/bin/jest",
+        },
+        "linux": {
+            "program": "${workspaceFolder}/server/node_modules/jest/bin/jest",
+        }
+    }
     ]
   }
   

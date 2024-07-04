@@ -47,18 +47,6 @@ router.post('/login', async (req, res) => {
 });
 
 /**
- * Fetch logged-in user details.
- * @route GET /api/me
- * @param req - Express request object with CustomRequest interface.
- * @param res - Express response object.
- */
-router.get('/me', auth, async (req: CustomRequest, res) => {
-  return res.status(200).json({
-    user: req.user,
-  });
-});
-
-/**
  * Logout the current user.
  * @route POST /api/logout
  * @param req - Express request object with CustomRequest interface.

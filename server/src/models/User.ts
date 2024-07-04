@@ -42,7 +42,7 @@ interface UserModel extends Model<IUser, {}, IUserMethods> {
      * @param password - The user's password.
      * @returns A promise that resolves with the user document, if found.
      */
-    findByCredentials(email: string, password: string): Promise<HydratedDocument<IUser, IUserMethods>>;
+    findByCredentials(email: string, password: string): Promise<HydratedDocument<IUser, IUserMethods> | null>;
 }
 
 /**
@@ -72,8 +72,8 @@ userSchema.pre('save', async function (next) {
  */
 userSchema.methods.generateAuthToken = async function () {
     const user = this as IUser;
-    const token = jwt.sign({ id: user.id }, JWT_SECRET);
-    user.tokens = user.tokens.concat({ token });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string);
+    user.tokens = user.tokens ? user.tokens.concat([{ token }]) : [{ token }];
     await user.save();
     return token;
 };

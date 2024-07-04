@@ -34,6 +34,7 @@ export const registerUser = async (user: Partial<IUser>) => {
  */
 export const loginUser = async (user: Partial<IUser>) => {
   const { email, password } = user;
+  
   if (!email || !password) {
     return {
       error: 'Please provide all the required fields',
