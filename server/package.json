@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/server.ts",
     "build": "tsc",
-    "serve": "node dist/index.js",
+    "serve": "node dist/server.js",
+    "test": "jest",
     "init-data": "npm run build && node dist/tools/initWithSampleData.js"
   },
   "keywords": [],
@@ -18,15 +19,22 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/mockingoose": "^2.13.0",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.14.9",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "jsonwebtoken": "^9.0.2",
+    "mockingoose": "^2.16.2",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   }
