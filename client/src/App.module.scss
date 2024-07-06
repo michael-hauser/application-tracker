@@ -1,0 +1,39 @@
+@import './styles/variables.scss';
+
+.app {
+    background-color: var(--Background);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--TextDefault-font-family);
+    font-size: var(--TextDefault-font-size);
+    font-weight: var(--TextDefault-font-weight);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--font);
+}
+
+p {
+    font-family: var(--TextDefault-font-family);
+    font-size: var(--TextDefault-font-size);
+    font-weight: var(--TextDefault-font-weight);
+}
+
+h1 {
+    font-family: var(--HeadingLg-font-family);
+    font-size: var(--HeadingLg-font-size);
+    font-weight: var(--HeadingLg-font-weight);
+}
+
+h2 {
+    font-family: var(--Heading-font-family);
+    font-size: var(--Heading-font-size);
+    font-weight: var(--Heading-font-weight);
+}

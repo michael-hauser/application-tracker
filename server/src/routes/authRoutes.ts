@@ -1,6 +1,6 @@
 import express from 'express';
 import { IUser } from '../models/User';
-import { loginUser, registerUser } from '../controllers/userController';
+import { loginUser, readUser, registerUser } from '../controllers/userController';
 import auth, { CustomRequest } from '../middleware/auth';
 
 const router = express.Router();
@@ -79,6 +79,25 @@ router.post('/logoutall', auth, async (req: CustomRequest, res) => {
   return res.status(200).json({
     message: 'User logged out from all devices successfully.',
   });
+});
+
+/**
+ * Fetch details of the authenticated user.
+ * @route GET /api/profile
+ * @param req - Express request object with CustomRequest interface.
+ * @param res - Express response object.
+ */
+router.get('/profile', auth, async (req: CustomRequest, res) => {
+  try {
+    const user = await readUser(req.user?.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error: any) {
+    console.error('Error fetching user:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 export default router;

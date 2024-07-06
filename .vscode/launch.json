@@ -10,6 +10,7 @@
         "outFiles": [
           "${workspaceFolder}/server/dist/**/*.js"
         ],
+        "envFile": "${workspaceFolder}/server/.env",
         "sourceMaps": true,
         "skipFiles": ["<node_internals>/**"],
         "cwd": "${workspaceFolder}/server"  // Set the current working directory to /server

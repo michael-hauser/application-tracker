@@ -1,0 +1,54 @@
+@import '../../styles/variables.scss';
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+
+    .form {
+        flex: 1;
+        display: flex;
+        flex-flow: column;
+        width: 0;
+        padding: 40px;
+        align-items: center;
+
+        .formContent {
+            width: 450px;
+            flex: 1;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20%;
+
+            .header {
+                .logo {
+                    height: 40px;
+                }
+            }
+    
+            .main {}
+        }
+    }
+
+    .preview {
+        flex: 1;
+        width: 0;
+        display: flex;
+        align-items: center;
+        background: var(--ChartGradient);
+        padding: 40px;
+        overflow: hidden;
+
+        .previewImageWrap {
+            position: relative;
+            height: 70%;
+
+            .previewImage {
+                position: absolute;
+                height: 100%;
+            }
+        }
+    }
+}

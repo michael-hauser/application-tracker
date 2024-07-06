@@ -1,0 +1,40 @@
+@import '../../styles/variables.scss';
+
+.home {
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  gap: 60px;
+
+  .charts {
+    display: flex;
+    flex-flow: row;
+    gap: 40px;
+
+    .chart {
+      background-color: var(--Gray5);
+      height: 200px;
+      display: flex;
+      flex: 1;
+      border-radius: var(--border-radius);
+    }
+  }
+
+  .applicationsWrap {
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+
+    .applicationsHeader {}
+
+    .applicationsFilter {
+      background-color: var(--Gray5);
+      height: 51px;
+    }
+
+    .applicationsData {
+      background-color: var(--Gray5);
+      height: 500px;
+    }
+  }
+}

@@ -50,3 +50,18 @@ export const loginUser = async (user: Partial<IUser>) => {
     token,
   };
 };
+
+/**
+ * Fetch user details for the authenticated user.
+ * @param userId - ID of the authenticated user.
+ * @returns Promise resolving to user object.
+ */
+export const readUser = async (userId: string): Promise<IUser | null> => {
+  try {
+    const user = await User.findById(userId).select('-password');
+    return user;
+  } catch (error: any) {
+    console.error('Error fetching user:', error.message);
+    throw new Error('Failed to fetch user');
+  }
+};

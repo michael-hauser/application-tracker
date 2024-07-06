@@ -1,0 +1,45 @@
+:root {
+  --ChartGradient: linear-gradient(360deg, #6c90d6 0%, #c4baeb 100%);
+  --ChartGradient2: linear-gradient(360deg, #c6ccd7 0%, #f0e6ed 100%);
+  --ChartGradient3: linear-gradient(23.24deg, #4a966d 0%, #3cb875 100%);
+  --PrimaryGradient: linear-gradient(180deg, #7e8cd8 0%, #6c90d6 100%);
+  --BackdropGradient: linear-gradient(180deg, #f9f9f9 37%, #f1f3f7 100%);
+  --Font: #0b1e43;
+  --FontShaded: #757585;
+  --FontInverse: #ffffff;
+  --FontInverseShaded: #e4e4e4;
+  --Background: #ffffff;
+  --Gray5: #f2f2f2;
+  --Gray10: #e5e5e5;
+  --Gray20: #cccccc;
+  --Gray30: #b2b2b2;
+  --Gray40: #999999;
+  --Gray50: #808080;
+  --Gray60: #666666;
+  --Gray60: #666666;
+  --Gray70: #4d4d4d;
+  --Gray80: #333333;
+  --Gray90: #1a1a1a;
+  --Black: #000000;
+  --Primary: #6c90d6;
+  --Primary100: #c2c8d4;
+  --Success: #4a966d;
+  --Error: #b82828;
+  --Warning: #d96907;
+  --TextDefault-font-size: 14px;
+  --TextDefault-font-family: Inter, sans-serif;
+  --TextDefault-font-weight: 400;
+  --Heading-font-size: 16px;
+  --Heading-font-family: Inter, sans-serif;
+  --Heading-font-weight: 700;
+  --HeadingLg-font-size: 24px;
+  --HeadingLg-font-family: Inter, sans-serif;
+  --HeadingLg-font-weight: 700;
+  
+
+
+    /* App Variables */
+    --breakpoint-xl: 1300px;
+    --mobile-padding: 16px;
+    --border-radius: 8px;
+  }

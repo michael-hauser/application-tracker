@@ -52,7 +52,8 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    admin: { type: Boolean, default: false }
+    admin: { type: Boolean, default: false },
+    tokens: [{ token: { type: String, required: true } }] // Define tokens array in the schema
 });
 
 /**
@@ -72,8 +73,8 @@ userSchema.pre('save', async function (next) {
  */
 userSchema.methods.generateAuthToken = async function () {
     const user = this as IUser;
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string);
-    user.tokens = user.tokens ? user.tokens.concat([{ token }]) : [{ token }];
+    const token = jwt.sign({ id: user.id }, JWT_SECRET);
+    user.tokens = user.tokens.concat([{ token }]);
     await user.save();
     return token;
 };

@@ -14,7 +14,7 @@ export interface CustomRequest extends Request {
  * Decoded JWT token interface.
  */
 interface DecodedToken {
-  _id: string;
+  id: string;
 }
 
 /**
@@ -30,9 +30,9 @@ const auth = async (req: CustomRequest, res: Response, next: NextFunction) => {
       throw new Error('Authentication failed. Token missing.');
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_KEY as string) as DecodedToken;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
     const user = await User.findOne({
-      _id: decoded._id,
+      _id: decoded.id,
       'tokens.token': token,
     });
 
