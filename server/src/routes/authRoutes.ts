@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request } from 'express';
 import { IUser } from '../models/User';
 import { loginUser, readUser, registerUser } from '../controllers/userController';
 import auth, { CustomRequest } from '../middleware/auth';
@@ -11,7 +11,13 @@ const router = express.Router();
  * @param req - Express request object.
  * @param res - Express response object.
  */
-router.post('/register', async (req, res) => {
+router.post('/register', async (req: Request, res) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '')
+  if (token) {
+    return res.status(400).json({
+      error: 'User can only register once',
+    });
+  }
   const userData: Partial<IUser> = {
     name: req.body.name,
     email: req.body.email,
@@ -32,18 +38,26 @@ router.post('/register', async (req, res) => {
  * @param req - Express request object.
  * @param res - Express response object.
  */
-router.post('/login', async (req, res) => {
+router.post('/login', async (req: Request, res) => {
+  const token = req.header('Authorization')?.replace('Bearer ', '')
+  if (token) {
+    return res.status(400).json({
+      error: 'User can only log in once',
+    });
+  }
   const userData: Partial<IUser> = {
     email: req.body.email,
     password: req.body.password,
   };
   const loggedInUser = await loginUser(userData);
-  if (loggedInUser?.error) {
+
+  if (loggedInUser && !loggedInUser.error) {
+    return res.status(200).json(loggedInUser);
+  } else {
     return res.status(400).json({
       error: loggedInUser.error,
     });
   }
-  return res.status(200).json(loggedInUser);
 });
 
 /**

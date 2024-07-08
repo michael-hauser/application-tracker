@@ -2,30 +2,31 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../../state/store';
-import { registerUser, selectUserStatus } from '../../state/slices/userSlice';
+import { registerUser, selectUserError, selectUserStatus } from '../../state/slices/userSlice';
 import styles from './Register.module.scss';
 
 const Register: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const status = useSelector(selectUserStatus);
+  const error = useSelector(selectUserError);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [localError, setLocalError] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!name || !email || !password || !confirmPassword) {
-      setError('Please fill out all fields');
+      setLocalError('Please fill out all fields');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setLocalError('Passwords do not match');
       return;
     }
 
@@ -34,17 +35,18 @@ const Register: React.FC = () => {
     if (registerUser.fulfilled.match(resultAction)) {
       navigate('/');
     } else {
-      setError('Registration failed. Please try again.');
+      setLocalError('Registration failed. Please try again.');
     }
   };
 
   return (
     <div className={styles.container}>
-      <h2>Register</h2>
+      <h1>Register</h1>
+      {localError && <p className={styles.error}>{localError}</p>}
       {error && <p className={styles.error}>{error}</p>}
-      <form onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="name">Name</label>
           <input
             type="name"
             id="name"
@@ -53,7 +55,7 @@ const Register: React.FC = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
@@ -62,7 +64,7 @@ const Register: React.FC = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
@@ -71,7 +73,7 @@ const Register: React.FC = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
+          <label htmlFor="confirmPassword">Confirm Password</label>
           <input
             type="password"
             id="confirmPassword"

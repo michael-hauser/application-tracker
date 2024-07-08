@@ -2,8 +2,6 @@ import mongoose, { Schema, Document, Model, HydratedDocument } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
-
 /**
  * Interface representing a User document.
  */
@@ -73,7 +71,7 @@ userSchema.pre('save', async function (next) {
  */
 userSchema.methods.generateAuthToken = async function () {
     const user = this as IUser;
-    const token = jwt.sign({ id: user.id }, JWT_SECRET);
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string);
     user.tokens = user.tokens.concat([{ token }]);
     await user.save();
     return token;

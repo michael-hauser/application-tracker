@@ -2,23 +2,24 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../../state/store';
-import { loginUser, selectUserStatus } from '../../state/slices/userSlice';
+import { loginUser, selectUserStatus, selectUserError } from '../../state/slices/userSlice';
 import styles from './Login.module.scss';
 
 const Login: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const status = useSelector(selectUserStatus);
+  const error = useSelector(selectUserError);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [localError, setLocalError] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!email || !password) {
-      setError('Please provide both email and password');
+      setLocalError('Please provide both email and password');
       return;
     }
 
@@ -27,17 +28,18 @@ const Login: React.FC = () => {
     if (loginUser.fulfilled.match(resultAction)) {
       navigate('/');
     } else {
-      setError('Login failed. Please check your credentials.');
+      setLocalError('Login failed. Please check your credentials.');
     }
   };
 
   return (
     <div className={styles.container}>
       <h1>Log In</h1>
+      {localError && <p className={styles.error}>{localError}</p>}
       {error && <p className={styles.error}>{error}</p>}
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
@@ -46,7 +48,7 @@ const Login: React.FC = () => {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
@@ -55,7 +57,7 @@ const Login: React.FC = () => {
           />
         </div>
         <button type="submit" disabled={status === 'loading'}>
-          {status === 'loading' ? 'Logging in...' : 'Login'}
+          {status === 'loading' ? 'Signing in...' : 'Sign in'}
         </button>
       </form>
       <p>
