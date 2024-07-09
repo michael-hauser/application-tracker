@@ -34,6 +34,7 @@ export interface FilterData {
 interface ApplicationState {
   applications: Application[];
   filteredApplications: Application[];
+  selectedApplication: Application | null;
   filter: ApplicationsFilter;
   filterData: FilterData;
   status: 'idle' | 'loading' | 'failed';
@@ -51,6 +52,7 @@ const DEFAULT_FILTER: ApplicationsFilter = {
 const initialState: ApplicationState = {
   applications: [],
   filteredApplications: [],
+  selectedApplication: null,
   filter: DEFAULT_FILTER,
   filterData: {
     locations: [],
@@ -104,44 +106,10 @@ const applicationSlice = createSlice({
     },
     filterApplications: (state, action: PayloadAction<Partial<ApplicationsFilter>>) => {
       state.filter = { ...state.filter, ...action.payload };
-
-      // Filtering
-      const f = state.filter;
-      const fStages = f.stage.map(stage => stage._id);
-      state.filteredApplications = state.applications.filter(application => {
-        const matchesSearch = f.search
-          ? (
-            application.company.toLowerCase().includes(f.search.toLowerCase()) ||
-            application.role.toLowerCase().includes(f.search.toLowerCase())
-          )
-          : true;
-        const matchesLocation = f.location.length ? f.location.includes(application.location) : true;
-        const matchesStage = f.stage.length ? fStages.includes(application.stage._id) : true;
-        const matchesRank = f.rank.length ? f.rank.includes(application.rank) : true;
-        return matchesSearch && matchesLocation && matchesStage && matchesRank;
-      });
-
-      // Sorting
-      if (action.payload.sort) {
-        state.filteredApplications.sort((a, b) => {
-          if (action.payload.sort === 'company') {
-            return a.company.localeCompare(b.company);
-          } else if (action.payload.sort === 'role') {
-            return a.role.localeCompare(b.role);
-          } else if (action.payload.sort === 'url') {
-            return a.url.localeCompare(b.url);
-          } else if (action.payload.sort === 'location') {
-            return a.location.localeCompare(b.location);
-          } else if (action.payload.sort === 'stage') {
-            return a.stage.name.localeCompare(b.stage.name);
-          } else if (action.payload.sort === 'salary') {
-            return (a.salary !== undefined && b.salary !== undefined) ? a.salary - b.salary : 0;
-          } else if (action.payload.sort === 'rank') {
-            return a.rank - b.rank;
-          }
-          return 0;
-        });
-      }
+      applyFilter(state, action);
+    },
+    setSelectedApplication(state, action: PayloadAction<Application>) {
+      state.selectedApplication = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -157,7 +125,8 @@ const applicationSlice = createSlice({
 
         // Initialize filter data
         state.filterData.locations = Array.from(new Set(action.payload.map(app => app.location))).sort();
-        state.filterData.stages = Array.from(new Map(action.payload.map(app => [app.stage._id, app.stage])).values()).sort((a, b) => a.number - b.number);
+        state.filterData.stages = Array.from(new Map(action.payload.map(app => [app.stage._id, app.stage])).values())
+          .sort((a, b) => a.number - b.number);
         state.filterData.ranks = [1, 2, 3, 4, 5];
         state.filter = DEFAULT_FILTER;
         state.filteredApplications = state.applications;
@@ -172,10 +141,15 @@ const applicationSlice = createSlice({
       })
       .addCase(updateApplication.fulfilled, (state, action: PayloadAction<Application>) => {
         const index = state.applications.findIndex(app => app._id === action.payload._id);
-        if (index >= 0) {
-          state.applications[index] = action.payload;
+        if (index !== -1) {
+            state.applications[index] = action.payload;
+            if (state.selectedApplication?._id === action.payload._id) {
+                state.selectedApplication = action.payload;
+            }
         }
         state.error = '';
+        state.selectedApplication = null;
+        applyFilter(state, { payload: state.filter, type: '' });
       })
       .addCase(deleteApplication.fulfilled, (state, action: PayloadAction<string>) => {
         state.applications = state.applications.filter(app => app._id !== action.payload);
@@ -185,7 +159,7 @@ const applicationSlice = createSlice({
 });
 
 // Export actions
-export const { filterApplications, resetFilter } = applicationSlice.actions;
+export const { filterApplications, resetFilter, setSelectedApplication } = applicationSlice.actions;
 
 // Selectors
 export const selectApplications = (state: RootState) => state.application.applications;
@@ -202,3 +176,44 @@ export const fetchApplicationsIfNeeded = (): AppThunk => (dispatch, getState) =>
 };
 
 export default applicationSlice.reducer;
+
+// Helper function to apply filter
+function applyFilter(state: ApplicationState, action: { payload: Partial<ApplicationsFilter>; type: string; }) {
+  const f = state.filter;
+  const fStages = f.stage.map(stage => stage._id);
+  state.filteredApplications = state.applications.filter(application => {
+    const matchesSearch = f.search
+      ? (
+        application.company.toLowerCase().includes(f.search.toLowerCase()) ||
+        application.role.toLowerCase().includes(f.search.toLowerCase())
+      )
+      : true;
+    const matchesLocation = f.location.length ? f.location.includes(application.location) : true;
+    const matchesStage = f.stage.length ? fStages.includes(application.stage._id) : true;
+    const matchesRank = f.rank.length ? f.rank.includes(application.rank) : true;
+    return matchesSearch && matchesLocation && matchesStage && matchesRank;
+  });
+
+  // Sorting
+  if (action.payload.sort) {
+    state.filteredApplications.sort((a, b) => {
+      if (action.payload.sort === 'company') {
+        return a.company.localeCompare(b.company);
+      } else if (action.payload.sort === 'role') {
+        return a.role.localeCompare(b.role);
+      } else if (action.payload.sort === 'url') {
+        return a.url.localeCompare(b.url);
+      } else if (action.payload.sort === 'location') {
+        return a.location.localeCompare(b.location);
+      } else if (action.payload.sort === 'stage') {
+        return a.stage.name.localeCompare(b.stage.name);
+      } else if (action.payload.sort === 'salary') {
+        return (a.salary !== undefined && b.salary !== undefined) ? a.salary - b.salary : 0;
+      } else if (action.payload.sort === 'rank') {
+        return a.rank - b.rank;
+      }
+      return 0;
+    });
+  }
+}
+

@@ -1,0 +1,33 @@
+/* ApplicationEditor.module.scss */
+.applicationEditor {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .formGroup {
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    
+    }
+        
+    .primary-button {
+        align-self: flex-end;
+        margin-top: 20px;
+    }
+    
+    .footer {
+        display: flex;
+        flex-flow: row;
+        gap: 8px;
+        justify-content: end;    
+    }
+}

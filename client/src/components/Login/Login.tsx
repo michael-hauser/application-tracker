@@ -56,7 +56,7 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit" disabled={status === 'loading'}>
+        <button className='primary-button' type="submit" disabled={status === 'loading'}>
           {status === 'loading' ? 'Signing in...' : 'Sign in'}
         </button>
       </form>

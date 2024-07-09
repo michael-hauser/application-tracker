@@ -81,7 +81,7 @@ const Register: React.FC = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <button type="submit" disabled={status === 'loading'}>
+        <button className='primary-button' type="submit" disabled={status === 'loading'}>
           {status === 'loading' ? 'Registering...' : 'Register'}
         </button>
       </form>
