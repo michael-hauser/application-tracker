@@ -1,5 +1,5 @@
 import request from 'supertest';
-import express, { Request, Response } from 'express';
+import express from 'express';
 import applicationRoutes from './applicationRoutes';
 import { getAllApplications, getApplicationById, createApplication, updateApplication, deleteApplication } from '../controllers/applicationController';
 import { describe } from 'node:test';
@@ -7,11 +7,11 @@ import { describe } from 'node:test';
 const app = express();
 app.use(express.json());
 
-// Mocking middleware for authentication
-const mockAuthMiddleware = (req: Request, res: Response, next: Function) => {
-    (<any>req).user = { id: 'mockUserId' }; // Mocking user id for authentication
+// Mocking middleware for auth
+const mockAuthMiddleware = (req: any, res: any, next: any) => {
+    (req as any).user = { id: 'mockUserId' }; // Mocking user id for authentication
     next();
-};
+  };
 
 // Applying mock middleware to all routes
 app.use(mockAuthMiddleware);
@@ -38,7 +38,7 @@ describe('applicationRoutes', () => {
             (getAllApplications as jest.Mock).mockResolvedValue(mockApplications);
     
             // Make a request using supertest
-            const res = await request(app).get('/applications');
+            const res = await request(app).get('/');
     
             // Assert the response
             expect(res.status).toBe(200);
@@ -50,7 +50,7 @@ describe('applicationRoutes', () => {
             (getAllApplications as jest.Mock).mockRejectedValue(new Error('Failed to fetch applications'));
     
             // Make a request using supertest
-            const res = await request(app).get('/applications');
+            const res = await request(app).get('/');
     
             // Assert the response
             expect(res.status).toBe(500);
@@ -71,7 +71,7 @@ describe('applicationRoutes', () => {
             (getApplicationById as jest.Mock).mockResolvedValue(mockApplication);
     
             // Make a request using supertest
-            const res = await request(app).get(`/applications/${mockApplicationId}`);
+            const res = await request(app).get(`/${mockApplicationId}`);
     
             // Assert the response
             expect(res.status).toBe(200);
@@ -84,7 +84,7 @@ describe('applicationRoutes', () => {
             (getApplicationById as jest.Mock).mockRejectedValue(new Error('Failed to fetch application'));
     
             // Make a request using supertest
-            const res = await request(app).get(`/applications/${mockApplicationId}`);
+            const res = await request(app).get(`/${mockApplicationId}`);
     
             // Assert the response
             expect(res.status).toBe(500);
@@ -97,7 +97,7 @@ describe('applicationRoutes', () => {
             (getApplicationById as jest.Mock).mockResolvedValue(null);
     
             // Make a request using supertest
-            const res = await request(app).get(`/applications/${mockApplicationId}`);
+            const res = await request(app).get(`/${mockApplicationId}`);
     
             // Assert the response
             expect(res.status).toBe(404);
@@ -118,7 +118,7 @@ describe('applicationRoutes', () => {
     
             // Make a request using supertest
             const res = await request(app)
-                .post('/applications')
+                .post('/')
                 .send(mockApplicationData);
     
             // Assert the response
@@ -132,7 +132,7 @@ describe('applicationRoutes', () => {
     
             // Make a request using supertest
             const res = await request(app)
-                .post('/applications')
+                .post('/')
                 .send({ company: 'New Company', role: 'New Role', salary: 100000 });
     
             // Assert the response
@@ -155,7 +155,7 @@ describe('applicationRoutes', () => {
     
             // Make a request using supertest
             const res = await request(app)
-                .put(`/applications/${mockApplicationId}`)
+                .put(`/${mockApplicationId}`)
                 .send(mockUpdatedData);
     
             // Assert the response
@@ -170,7 +170,7 @@ describe('applicationRoutes', () => {
     
             // Make a request using supertest
             const res = await request(app)
-                .put(`/applications/${mockApplicationId}`)
+                .put(`/${mockApplicationId}`)
                 .send({ company: 'Updated Company', role: 'Updated Role', salary: 120000 });
     
             // Assert the response
@@ -189,7 +189,7 @@ describe('applicationRoutes', () => {
     
             // Make a request using supertest
             const res = await request(app)
-                .delete(`/applications/${mockApplicationId}`);
+                .delete(`/${mockApplicationId}`);
     
             // Assert the response
             expect(res.status).toBe(200);
@@ -203,7 +203,7 @@ describe('applicationRoutes', () => {
     
             // Make a request using supertest
             const res = await request(app)
-                .delete(`/applications/${mockApplicationId}`);
+                .delete(`/${mockApplicationId}`);
     
             // Assert the response
             expect(res.status).toBe(500);
