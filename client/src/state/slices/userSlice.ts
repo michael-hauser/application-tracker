@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { fetchUserProfileAPI, loginUserAPI, looutUserAPI, registerUserAPI } from '../../services/userService';
-import { saveAuthToken, removeAuthToken } from '../../utils/auth';
+import { saveAuthToken, removeAuthToken, isAuthenticated } from '../../utils/auth';
 import { IAuthModel, IUser } from '../../models/User.model';
 import createCustomAsyncThunk from '../../utils/createCustomAsyncThunk';
 
@@ -113,6 +113,7 @@ export const userSlice = createSlice({
       .addCase(fetchUserDetails.rejected, (state, action) => {
         state.status = 'failed';
         state.error = null;
+        if(isAuthenticated()) removeAuthToken();
       });
   },
 });

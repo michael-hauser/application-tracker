@@ -1,0 +1,105 @@
+@import-normalize;
+@import './styles/variables.scss';
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    color: var(--font);
+}
+
+a {
+    color: var(--Primary700);
+}
+
+input {
+    border: 1px solid var(--Gray20);
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+
+    &:hover,
+    &:active {
+        border: 1px solid var(--Gray30);
+    }
+}
+
+body {
+    margin: 0;
+    font-family: var(--TextDefault-font-family);
+    font-size: var(--TextDefault-font-size);
+    font-weight: var(--TextDefault-font-weight);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+    font-family: var(--TextDefault-font-family);
+    font-size: var(--TextDefault-font-size);
+    font-weight: var(--TextDefault-font-weight);
+}
+
+h1 {
+    font-family: var(--HeadingLg-font-family);
+    font-size: var(--HeadingLg-font-size);
+    font-weight: var(--HeadingLg-font-weight);
+}
+
+h2 {
+    font-family: var(--Heading-font-family);
+    font-size: var(--Heading-font-size);
+    font-weight: var(--Heading-font-weight);
+}
+
+.button {
+    position: relative;
+    height: var(--input-height);
+    padding: 0px 16px;
+    border-radius: var(--border-radius);
+    font-size: var(--TextDefault-font-size);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, background 0.2s ease, background-color 0.2s ease;
+    
+    &:disabled {
+        opacity: 0.8;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    &:hover {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.primary-button {
+    @extend .button;
+    border: none;
+    background: var(--PrimaryGradient1);
+    color: var(--FontInverse);
+
+    &:hover {
+        background: var(--PrimaryGradient1Hover);
+    }
+
+    &:active {
+        background: var(--PrimaryGradient1Focus);
+    }
+}
+
+.secondary-button {
+    @extend .button;
+    border: 1px solid var(--Gray20);
+    background-color: transparent;
+    color: var(--Font);
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    &:active {
+        background-color: rgba(0, 0, 0, 0.08);
+    }
+}

@@ -1,0 +1,65 @@
+.applicationsGrid {
+    height: auto;
+    display: grid;
+  
+    .tableRow,
+    .tableHead {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr)); /* Ensure equal width columns */
+      cursor: pointer;
+  
+      .tableCell {
+        padding: 16px;
+        overflow: hidden;
+        text-wrap: nowrap;
+      }
+    }
+
+    .tableRow {
+        &:hover {
+            background-color: var(--Gray5);
+        }
+    }
+
+    .tableHead {
+      font-weight: var(--Heading-font-weight);
+      border-bottom: 1px solid var(--Gray10);
+    }
+
+    .badge {
+      width: auto;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: var(--border-radius);
+
+      &.init {
+        background: var(--InitGradient);
+        color: var(--Font);
+      }
+
+      &.active1 {
+        background: var(--PrimaryGradient1);
+        color: var(--FontInverse);
+      }
+
+      &.active2 {
+        background: var(--ProgressGradient);
+        color: var(--FontInverse);
+      }
+
+      &.pause {
+        background: var(--WarningGradient);
+        color: var(--FontInverse);
+      }
+
+      &.fail {
+        background: var(--ErrorGradient);
+        color: var(--FontInverse);
+      }
+
+      &.success {
+        background: var(--SuccessGradient);
+        color: var(--FontInverse);
+      }
+    }
+  }

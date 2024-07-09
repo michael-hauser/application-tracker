@@ -13,7 +13,7 @@ export const addApplicationAPI = (newApplication: Omit<Application, 'id'>) => {
 };
 
 export const updateApplicationAPI = (updatedApplication: Application) => {
-  return axios.put(`${apiPath}/${routesPrefix}/${updatedApplication.id}`, updatedApplication);
+  return axios.put(`${apiPath}/${routesPrefix}/${updatedApplication._id}`, updatedApplication);
 };
 
 export const deleteApplicationAPI = (applicationId: string) => {

@@ -8,7 +8,7 @@ export interface IApplication extends Document {
     location: string;
     salary?: number;
     stage: Types.ObjectId; 
-    rank?: number;
+    rank: number;
     dateCreated: Date;
     dateModified: Date;
     dateApplied?: Date;
