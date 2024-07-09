@@ -8,7 +8,7 @@ const router = express.Router();
  * @description Get all applications for the current user
  * @access Private
  */
-router.get('/applications', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     const userId = req.user?.id; // Assuming userId is extracted from authentication middleware
     try {
         const applications = await getAllApplications(userId);
@@ -24,7 +24,7 @@ router.get('/applications', async (req: Request, res: Response) => {
  * @description Get a single application by ID
  * @access Private
  */
-router.get('/applications/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const userId = req.user?.id; // Assuming userId is extracted from authentication middleware
     try {
@@ -44,7 +44,7 @@ router.get('/applications/:id', async (req: Request, res: Response) => {
  * @description Create a new application
  * @access Private
  */
-router.post('/applications', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
     const applicationData = req.body;
     const userId = req.user?.id; // Assuming userId is extracted from authentication middleware
     try {
@@ -61,7 +61,7 @@ router.post('/applications', async (req: Request, res: Response) => {
  * @description Update an existing application by ID
  * @access Private
  */
-router.put('/applications/:id', async (req: Request, res: Response) => {
+router.put('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const applicationData = req.body;
     const userId = req.user?.id; // Assuming userId is extracted from authentication middleware
@@ -82,7 +82,7 @@ router.put('/applications/:id', async (req: Request, res: Response) => {
  * @description Delete an application by ID
  * @access Private
  */
-router.delete('/applications/:id', async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     const userId = req.user?.id; // Assuming userId is extracted from authentication middleware
     try {

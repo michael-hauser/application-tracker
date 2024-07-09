@@ -8,6 +8,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  color: var(--font);
 }
 
 a {
@@ -46,7 +47,6 @@ body {
     font-weight: var(--TextDefault-font-weight);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: var(--font);
 }
 
 p {

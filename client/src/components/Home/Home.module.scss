@@ -33,8 +33,63 @@
     }
 
     .applicationsData {
-      background-color: var(--Gray5);
-      height: 500px;
+      // background-color: var(--Gray5);
+      height: auto;
+      display: grid;
+    
+      .tableRow,
+      .tableHead {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr)); /* Ensure equal width columns */
+        cursor: pointer;
+    
+        .tableCell {
+          padding: 16px;
+          overflow: hidden;
+          text-wrap: nowrap;
+        }
+
+        &:hover {
+          background-color: var(--Gray5);
+        }
+      }
+
+      .tableHead {
+        font-weight: var(--Heading-font-weight);
+        font-size: var(--Heading-font-size);
+        font-family: var(--Heading-font-family);
+
+        border-bottom: 1px solid var(--Gray10);
+      }
+
+      .badge {
+        width: auto;
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: var(--border-radius);
+
+        &.init {
+          background: var(--ChartGradient2);
+          color: var(--Font);
+        }
+
+        &.active {
+          background: var(--PrimaryGradient);
+          color: var(--FontInverse);
+        }
+
+        &.success {
+          background: var(--ChartGradient3);
+          color: var(--FontInverse);
+        }
+
+        &.fail {
+          background: linear-gradient(360deg, #b82828 0%, #d43f21 100%);;
+          color: var(--FontInverse);
+        }
+      }
     }
+    
+    
   }
 }

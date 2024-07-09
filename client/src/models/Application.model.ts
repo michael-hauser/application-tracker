@@ -1,3 +1,5 @@
+import { Stage } from "./Stage.model";
+
 export interface Application {
     id: string;
     company: string;
@@ -5,7 +7,7 @@ export interface Application {
     url: string;
     location: string;
     salary?: number;
-    stage: string; 
+    stage: Stage; 
     rank?: number;
     dateCreated: Date;
     dateModified: Date;
