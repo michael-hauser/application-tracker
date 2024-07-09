@@ -1,5 +1,7 @@
 # Application Tracker
 
+![Project Thumbnail](./thumbnail.png)
+
 A MERN stack application for tracking and managing job applications.
 
 ## Table of Contents
