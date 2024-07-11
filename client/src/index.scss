@@ -1,5 +1,6 @@
 @import-normalize;
 @import './styles/variables.scss';
+@import './styles/fonts/IconFont/IconFont.css';
 
 *,
 *::before,
@@ -12,7 +13,7 @@ a {
     color: var(--Primary700);
 }
 
-input {
+input, textarea, select {
     border: 1px solid var(--Gray20);
     padding: 0.5rem;
     border-radius: var(--border-radius);
@@ -30,6 +31,14 @@ body {
     font-weight: var(--TextDefault-font-weight);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+// Prevents the body from scrolling when a modal is open
+body.modal-open {
+    overflow: hidden;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
 }
 
 p {
@@ -58,6 +67,11 @@ h2 {
     font-size: var(--TextDefault-font-size);
     cursor: pointer;
     transition: box-shadow 0.2s ease, background 0.2s ease, background-color 0.2s ease;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     
     &:disabled {
         opacity: 0.8;
@@ -101,5 +115,20 @@ h2 {
 
     &:active {
         background-color: rgba(0, 0, 0, 0.08);
+    }
+}
+
+.danger-button {
+    @extend .button;
+    border: 1px solid var(--Error);
+    background-color: transparent;
+    color: var(--Error);
+
+    &:hover {
+        background-color: var(--Error5);
+    }
+
+    &:active {
+        background-color: var(--Error10);
     }
 }

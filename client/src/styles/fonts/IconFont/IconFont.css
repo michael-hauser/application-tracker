@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "ApplicationTrackerIcons";
+    src: url('./IconFont.woff2?t=1720714786078') format('woff2'),
+        url('./IconFont.woff?t=1720714786078') format('woff'),
+        url('./IconFont.ttf?t=1720714786078') format('truetype');
+}
+
+.iconfont {
+    font-family: "ApplicationTrackerIcons" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-magnifyer:before { content: "\e900"; }
+.icon-arrow-down:before { content: "\e901"; }
+.icon-dots:before { content: "\e902"; }
+.icon-add:before { content: "\e903"; }
+.icon-magic:before { content: "\e904"; }
+.icon-google:before { content: "\e905"; }
+.icon-loading:before { content: "\e906"; }
+
+
+/**
+ * Make by Icon Font Exporter
+ * https://www.figma.com/community/plugin/1129455674275940478/Icon-Font-Exporter
+ */

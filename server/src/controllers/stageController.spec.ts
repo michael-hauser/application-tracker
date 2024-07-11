@@ -6,7 +6,7 @@ import {
   updateStage,
   deleteStage
 } from './stageController';
-import Stage, { IStage } from '../models/Stage';
+import Stage, { IStage, StageType } from '../models/Stage';
 
 // Mock Stage model methods
 mockingoose(Stage);
@@ -14,6 +14,7 @@ mockingoose(Stage);
 // Define a mocked stage data
 const mockStageData: Partial<IStage> = {
   name: 'Stage 1',
+  type: StageType.Init,
   number: 1
 };
 
@@ -25,8 +26,8 @@ describe('StageController', () => {
 
     it('should return all stages', async () => {
       const stages = [
-        { _id: 'mockedId1', name: 'Stage 1', number: 1 },
-        { _id: 'mockedId2', name: 'Stage 2', number: 2 }
+        { _id: 'mockedId1', name: 'Stage 1', type: StageType.Init, number: 1 },
+        { _id: 'mockedId2', name: 'Stage 2', type: StageType.Fail, number: 2 }
       ];
 
       mockingoose(Stage).toReturn(stages, 'find');

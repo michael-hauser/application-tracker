@@ -43,11 +43,12 @@ export const getApplicationById = async (applicationId: string, userId: string):
  * @param applicationData Data object for new application
  * @returns Promise resolving to created application object
  */
-export const createApplication = async (applicationData: Partial<IApplication>): Promise<IApplication> => {
+export const createApplication = async (applicationData: Partial<IApplication>): Promise<IApplication | null> => {
     try {
         const newApplication = new Application(applicationData);
         const application = await newApplication.save();
-        return application;
+        const savedApplication = await Application.findById(application._id).populate('stage');
+        return savedApplication;
     } catch (err: any) {
         console.error('Error creating application:', err.message);
         throw new Error('Failed to create application');
@@ -83,6 +84,8 @@ export const updateApplication = async (
         application.dateModified = new Date();
 
         application = await application.save();
+        application = await Application.findById(application._id).populate('stage');
+
         return application;
     } catch (err: any) {
         console.error('Error updating application:', err.message);

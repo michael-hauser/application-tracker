@@ -31,6 +31,8 @@
   --Primary700: #254084;
   --Success: #4a966d;
   --Error: #b82828;
+  --Error5: #faeaea;
+  --Error10: #f5d6d6;
   --Warning: #d96907;
   --Progress: #7e2ac1;
   --TextDefault-font-size: 14px;
@@ -42,11 +44,11 @@
   --HeadingLg-font-size: 24px;
   --HeadingLg-font-family: Inter, sans-serif;
   --HeadingLg-font-weight: 700;
-  
-  
-    /* App Variables */
-    --breakpoint-xl: 1300px;
-    --mobile-padding: 16px;
-    --border-radius: 8px;
-    --input-height: 2.4rem;
-  }
+
+
+  /* App Variables */
+  --breakpoint-xl: 1300px;
+  --mobile-padding: 16px;
+  --border-radius: 8px;
+  --input-height: 2.4rem;
+}

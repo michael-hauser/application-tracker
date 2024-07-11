@@ -1,0 +1,37 @@
+[
+    {
+        "name": "Magnifyer",
+        "className": "Magnifyer",
+        "unicode": "e900"
+    },
+    {
+        "name": "Arrow_Down",
+        "className": "Arrow_Down",
+        "unicode": "e901"
+    },
+    {
+        "name": "Dots",
+        "className": "Dots",
+        "unicode": "e902"
+    },
+    {
+        "name": "add",
+        "className": "add",
+        "unicode": "e903"
+    },
+    {
+        "name": "Magic",
+        "className": "Magic",
+        "unicode": "e904"
+    },
+    {
+        "name": "Google",
+        "className": "Google",
+        "unicode": "e905"
+    },
+    {
+        "name": "Loading",
+        "className": "Loading",
+        "unicode": "e906"
+    }
+]

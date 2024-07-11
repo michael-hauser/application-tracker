@@ -14,7 +14,7 @@ const mockApplicationData1: Partial<IApplication> = {
     role: "Superrole 1",
     url: "Url",
     location: "Los Angeles, CA",
-    salary: 150000,
+    salary: "150000",
     stage: new mongoose.Types.ObjectId(),
     rank: 4,
     dateCreated: new Date(),
@@ -27,7 +27,7 @@ const mockApplicationData2: Partial<IApplication> = {
     role: "Superrole 2",
     url: "Url",
     location: "Los Angeles, CA",
-    salary: 150000,
+    salary: "150000",
     stage: new mongoose.Types.ObjectId(),
     rank: 4,
     dateCreated: new Date(),
@@ -141,6 +141,7 @@ describe("applicationController", () => {
         it("should create a new application", async () => {
             // Mock the Application.save() method to return the created application
             mockingoose(Application).toReturn(mockApplicationData1, "save");
+            mockingoose(Application).toReturn(mockApplicationData1, "findOne");
 
             // Call createApplication function with mockApplicationData
             const result = await createApplication(mockApplicationData1);
@@ -173,7 +174,7 @@ describe("applicationController", () => {
                 company: "Updated Company",
                 role: "Updated Role",
                 location: "Updated Location",
-                salary: 100000,
+                salary: "100000",
             };
 
             // Mock Application.findById() to return the mockExistingApplication
@@ -181,12 +182,16 @@ describe("applicationController", () => {
 
             // Mock Application.save() to return the updated application
             mockingoose(Application).toReturn({ ...mockApplicationData1, ...updatedFields }, "save");
+            mockingoose(Application).toReturn({ ...mockApplicationData1, ...updatedFields }, "findOne");
 
             // Call updateApplication function with mockApplicationId, updatedFields, and mockUserId
             const result = await updateApplication(mockApplicationId, updatedFields, mockUserId);
 
             // Assert that the result matches the updatedFields
-            expect(result).toMatchObject(updatedFields);
+            expect(result?.company).toEqual(updatedFields.company);
+            expect(result?.role).toEqual(updatedFields.role);
+            expect(result?.location).toEqual(updatedFields.location);
+            expect(result?.salary).toEqual(updatedFields.salary);
         });
 
         it("should throw an error when application is not found", async () => {

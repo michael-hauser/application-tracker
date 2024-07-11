@@ -25,7 +25,11 @@
     flex-flow: column;
     gap: 16px;
 
-    .applicationsHeader {}
+    .applicationsHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     .applicationsFilter {
       background: var(--BackdropGradient);

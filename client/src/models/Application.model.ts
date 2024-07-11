@@ -6,11 +6,12 @@ export interface Application {
     role: string;
     url: string;
     location: string;
-    salary?: number;
+    salary?: string;
     stage: Stage; 
     rank: number;
     dateCreated: Date;
     dateModified: Date;
     dateApplied?: Date;
     user: string;
+    comments?: string;
 }

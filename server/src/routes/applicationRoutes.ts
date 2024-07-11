@@ -47,6 +47,8 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     const applicationData = req.body;
     const userId = req.user?.id; // Assuming userId is extracted from authentication middleware
+    applicationData.id = undefined; // Ensure the ID is not set
+    applicationData._id = undefined; // Ensure the ID is not set
     try {
         const newApplication = await createApplication({ ...applicationData, user: userId });
         res.status(201).json(newApplication);

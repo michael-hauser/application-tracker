@@ -37,6 +37,7 @@ interface ApplicationState {
   selectedApplication: Application | null;
   filter: ApplicationsFilter;
   filterData: FilterData;
+  editorMode: 'closed' | 'view' | 'edit' | 'add';
   status: 'idle' | 'loading' | 'failed';
   error: string | undefined | null;
 }
@@ -46,7 +47,7 @@ const DEFAULT_FILTER: ApplicationsFilter = {
   location: [],
   stage: [],
   rank: [],
-  sort: SortOptions.none
+  sort: SortOptions.date
 };
 
 const initialState: ApplicationState = {
@@ -59,6 +60,7 @@ const initialState: ApplicationState = {
     stages: [],
     ranks: []
   },
+  editorMode: 'closed',
   status: 'idle',
   error: null
 };
@@ -110,7 +112,18 @@ const applicationSlice = createSlice({
     },
     setSelectedApplication(state, action: PayloadAction<Application>) {
       state.selectedApplication = action.payload;
-    }
+    },
+    openEditorEdit(state) {
+      state.editorMode = 'edit';
+    },
+    openEditorAdd(state) {
+      state.selectedApplication = null;
+      state.editorMode = 'add';
+    },
+    closeEditor(state) {
+      state.selectedApplication = null;
+      state.editorMode = 'closed';
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -129,7 +142,7 @@ const applicationSlice = createSlice({
           .sort((a, b) => a.number - b.number);
         state.filterData.ranks = [1, 2, 3, 4, 5];
         state.filter = DEFAULT_FILTER;
-        state.filteredApplications = state.applications;
+        applyFilter(state, { payload: state.filter, type: '' });
       })
       .addCase(fetchApplications.rejected, (state, action) => {
         state.status = 'failed';
@@ -138,28 +151,33 @@ const applicationSlice = createSlice({
       .addCase(addApplication.fulfilled, (state, action: PayloadAction<Application>) => {
         state.applications.push(action.payload);
         state.error = '';
+        applyFilter(state, { payload: state.filter, type: '' });
       })
       .addCase(updateApplication.fulfilled, (state, action: PayloadAction<Application>) => {
         const index = state.applications.findIndex(app => app._id === action.payload._id);
         if (index !== -1) {
             state.applications[index] = action.payload;
-            if (state.selectedApplication?._id === action.payload._id) {
-                state.selectedApplication = action.payload;
-            }
+            state.error = '';
+            applyFilter(state, { payload: state.filter, type: '' });
         }
-        state.error = '';
-        state.selectedApplication = null;
-        applyFilter(state, { payload: state.filter, type: '' });
       })
       .addCase(deleteApplication.fulfilled, (state, action: PayloadAction<string>) => {
         state.applications = state.applications.filter(app => app._id !== action.payload);
+        applyFilter(state, { payload: state.filter, type: '' });
         state.error = '';
       });
   },
 });
 
 // Export actions
-export const { filterApplications, resetFilter, setSelectedApplication } = applicationSlice.actions;
+export const {
+  filterApplications,
+  resetFilter,
+  setSelectedApplication,
+  openEditorAdd,
+  openEditorEdit,
+  closeEditor
+} = applicationSlice.actions;
 
 // Selectors
 export const selectApplications = (state: RootState) => state.application.applications;
@@ -177,20 +195,46 @@ export const fetchApplicationsIfNeeded = (): AppThunk => (dispatch, getState) =>
 
 export default applicationSlice.reducer;
 
+const parseSalary = (salary: string | undefined) => {
+  if (!salary) return 0;
+
+  // Remove non-numeric characters except for range indicators
+  const cleaned = salary.replace(/[^\d\-.kK]/g, '');
+
+  // Split ranges
+  const parts = cleaned.split(/[-–]/).map(part => part.trim());
+
+  // Convert parts to numbers
+  const values = parts.map(part => {
+      if (part.toLowerCase().includes('k')) {
+          return parseFloat(part) * 1000;
+      }
+      return parseFloat(part);
+  });
+
+  // Return the average if range, otherwise the single value
+  if (values.length === 2) {
+      return (values[0] + values[1]) / 2;
+  }
+
+  return values[0] || 0;
+};
+
+
 // Helper function to apply filter
 function applyFilter(state: ApplicationState, action: { payload: Partial<ApplicationsFilter>; type: string; }) {
-  const f = state.filter;
-  const fStages = f.stage.map(stage => stage._id);
+  const filter = state.filter;
+  const filterStages = filter.stage.map(stage => stage._id);
   state.filteredApplications = state.applications.filter(application => {
-    const matchesSearch = f.search
+    const matchesSearch = filter.search
       ? (
-        application.company.toLowerCase().includes(f.search.toLowerCase()) ||
-        application.role.toLowerCase().includes(f.search.toLowerCase())
+        application.company.toLowerCase().includes(filter.search.toLowerCase()) ||
+        application.role.toLowerCase().includes(filter.search.toLowerCase())
       )
       : true;
-    const matchesLocation = f.location.length ? f.location.includes(application.location) : true;
-    const matchesStage = f.stage.length ? fStages.includes(application.stage._id) : true;
-    const matchesRank = f.rank.length ? f.rank.includes(application.rank) : true;
+    const matchesLocation = filter.location.length ? filter.location.includes(application.location) : true;
+    const matchesStage = filter.stage.length ? filterStages.includes(application.stage._id) : true;
+    const matchesRank = filter.rank.length ? filter.rank.includes(application.rank) : true;
     return matchesSearch && matchesLocation && matchesStage && matchesRank;
   });
 
@@ -208,10 +252,14 @@ function applyFilter(state: ApplicationState, action: { payload: Partial<Applica
       } else if (action.payload.sort === 'stage') {
         return a.stage.name.localeCompare(b.stage.name);
       } else if (action.payload.sort === 'salary') {
-        return (a.salary !== undefined && b.salary !== undefined) ? a.salary - b.salary : 0;
+          const aSalary = parseSalary(a.salary);
+          const bSalary = parseSalary(b.salary);
+          return bSalary - aSalary;
       } else if (action.payload.sort === 'rank') {
         return a.rank - b.rank;
-      }
+      } else if (action.payload.sort === 'date') {
+        return new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(); 
+      } 
       return 0;
     });
   }

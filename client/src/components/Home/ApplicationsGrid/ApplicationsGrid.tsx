@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './ApplicationsGrid.module.scss';
 import { Stage, StageType } from '../../../models/Stage.model';
 import { Application } from '../../../models/Application.model';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedApplication } from '../../../state/slices/applicationSlice';
+import { openEditorEdit, setSelectedApplication } from '../../../state/slices/applicationSlice';
 import { RootState } from '../../../state/store';
 import ApplicationEditor from '../../ApplicationEditor/ApplicationEditor';
+import Sidebar from '../../../lib/sidebar/Sidebar';
 
-const ApplicationsGrid = ({ applications }: { applications: Application[] }) => {
+const ApplicationsGrid = () => {
     const dispatch = useDispatch();
-    const selectedApplication = useSelector((state: RootState) => state.application.selectedApplication);
-
-    const formatSalary = (number: number) => number.toLocaleString('en-US');
+    const editorMode = useSelector((state: RootState) => state.application.editorMode);
+    const applications = useSelector((state: RootState) => state.application.filteredApplications);
 
     const getBadgeColor = (stage: Stage) => {
         switch (stage.type) {
@@ -27,11 +27,14 @@ const ApplicationsGrid = ({ applications }: { applications: Application[] }) => 
                 return styles.fail;
             case StageType.Success:
                 return styles.success;
+            default:
+                return '';
         }
     };
 
     const handleRowClick = (application: Application) => {
         dispatch(setSelectedApplication(application));
+        dispatch(openEditorEdit());
     };
 
     return (
@@ -56,7 +59,7 @@ const ApplicationsGrid = ({ applications }: { applications: Application[] }) => 
                         <div className={styles.tableCell}>{a.role}</div>
                         <div className={styles.tableCell}>{a.url}</div>
                         <div className={styles.tableCell}>{a.location}</div>
-                        <div className={styles.tableCell}>{formatSalary(a.salary ?? 0)}</div>
+                        <div className={styles.tableCell}>{a.salary}</div>
                         <div className={styles.tableCell}>
                             <div className={styles.badge + ' ' + getBadgeColor(a.stage)}>{a.stage.name}</div>
                         </div>
@@ -64,13 +67,8 @@ const ApplicationsGrid = ({ applications }: { applications: Application[] }) => 
                     </div>
                 ))}
             </div>
-            {selectedApplication && (
-                <div className={styles.overlay}>
-                    <div className={styles.sidebar}>
-                        <ApplicationEditor />
-                    </div>
-                </div>
-            )}
+
+            {editorMode === 'edit' ? <Sidebar><ApplicationEditor /></Sidebar> : null}
         </div>
     );
 };

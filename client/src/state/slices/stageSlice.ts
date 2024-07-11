@@ -1,12 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { AppThunk, RootState } from '../store';
 import { fetchStagesAPI } from '../../services/stageService';
-
-interface Stage {
-  id: string;
-  name: string;
-  [key: string]: any;
-}
+import { Stage } from '../../models/Stage.model';
 
 interface StageState {
   stages: Stage[];
@@ -52,6 +47,14 @@ export const stageSlice = createSlice({
 // Selectors
 export const selectStages = (state: RootState) => state.stage.stages;
 export const selectStageStatus = (state: RootState) => state.stage.status;
+
+// Async Thunk for conditionally dispatching actions based on current state
+export const fetchStagesIfNeeded = (): AppThunk => (dispatch, getState) => {
+  const state = getState();
+  if (state.stage.status === 'idle') {
+    dispatch(fetchStages());
+  }
+};
 
 // Export the reducer
 export default stageSlice.reducer;
