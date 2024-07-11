@@ -6,11 +6,10 @@
 *::before,
 *::after {
     box-sizing: border-box;
-    color: var(--font);
 }
 
 a {
-    color: var(--Primary700);
+    color: var(--Font);
 }
 
 input, textarea, select {
@@ -31,6 +30,7 @@ body {
     font-weight: var(--TextDefault-font-weight);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: var(--Font);
 }
 
 // Prevents the body from scrolling when a modal is open

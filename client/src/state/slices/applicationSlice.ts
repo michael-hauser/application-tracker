@@ -4,6 +4,8 @@ import { fetchApplicationsAPI, addApplicationAPI, updateApplicationAPI, deleteAp
 import { Application } from '../../models/Application.model';
 import createCustomAsyncThunk from '../../utils/createCustomAsyncThunk';
 import { Stage } from '../../models/Stage.model';
+import { applyApplicationsFilter } from './helpers/applyApplicationsFilter';
+import { updateStatistics } from './helpers/updateStatistics';
 
 export enum SortOptions {
   none = 'none',
@@ -31,7 +33,11 @@ export interface FilterData {
   ranks: number[];
 }
 
-interface ApplicationState {
+export interface Statistics {
+  totalApplications: number;
+}
+
+export interface ApplicationState {
   applications: Application[];
   filteredApplications: Application[];
   selectedApplication: Application | null;
@@ -40,6 +46,7 @@ interface ApplicationState {
   editorMode: 'closed' | 'view' | 'edit' | 'add';
   status: 'idle' | 'loading' | 'failed';
   error: string | undefined | null;
+  statistics: Statistics;
 }
 
 const DEFAULT_FILTER: ApplicationsFilter = {
@@ -62,7 +69,10 @@ const initialState: ApplicationState = {
   },
   editorMode: 'closed',
   status: 'idle',
-  error: null
+  error: null,
+  statistics: {
+    totalApplications: 0
+  }
 };
 
 // Async Thunks
@@ -108,7 +118,7 @@ const applicationSlice = createSlice({
     },
     filterApplications: (state, action: PayloadAction<Partial<ApplicationsFilter>>) => {
       state.filter = { ...state.filter, ...action.payload };
-      applyFilter(state, action);
+      state.filteredApplications = applyApplicationsFilter(state.filter, state.applications);
     },
     setSelectedApplication(state, action: PayloadAction<Application>) {
       state.selectedApplication = action.payload;
@@ -142,7 +152,10 @@ const applicationSlice = createSlice({
           .sort((a, b) => a.number - b.number);
         state.filterData.ranks = [1, 2, 3, 4, 5];
         state.filter = DEFAULT_FILTER;
-        applyFilter(state, { payload: state.filter, type: '' });
+        state.filteredApplications = applyApplicationsFilter(state.filter, state.applications);
+
+        //Update Statistics
+        state.statistics = updateStatistics(state);
       })
       .addCase(fetchApplications.rejected, (state, action) => {
         state.status = 'failed';
@@ -151,20 +164,29 @@ const applicationSlice = createSlice({
       .addCase(addApplication.fulfilled, (state, action: PayloadAction<Application>) => {
         state.applications.push(action.payload);
         state.error = '';
-        applyFilter(state, { payload: state.filter, type: '' });
+        state.filteredApplications = applyApplicationsFilter(state.filter, state.applications);
+
+        //Update Statistics
+        state.statistics = updateStatistics(state);
       })
       .addCase(updateApplication.fulfilled, (state, action: PayloadAction<Application>) => {
         const index = state.applications.findIndex(app => app._id === action.payload._id);
         if (index !== -1) {
             state.applications[index] = action.payload;
             state.error = '';
-            applyFilter(state, { payload: state.filter, type: '' });
-        }
+            state.filteredApplications = applyApplicationsFilter(state.filter, state.applications);
+
+            //Update Statistics
+            state.statistics = updateStatistics(state);
+          }
       })
       .addCase(deleteApplication.fulfilled, (state, action: PayloadAction<string>) => {
         state.applications = state.applications.filter(app => app._id !== action.payload);
-        applyFilter(state, { payload: state.filter, type: '' });
+        state.filteredApplications = applyApplicationsFilter(state.filter, state.applications);
         state.error = '';
+
+        //Update Statistics
+        state.statistics = updateStatistics(state);
       });
   },
 });
@@ -195,73 +217,4 @@ export const fetchApplicationsIfNeeded = (): AppThunk => (dispatch, getState) =>
 
 export default applicationSlice.reducer;
 
-const parseSalary = (salary: string | undefined) => {
-  if (!salary) return 0;
-
-  // Remove non-numeric characters except for range indicators
-  const cleaned = salary.replace(/[^\d\-.kK]/g, '');
-
-  // Split ranges
-  const parts = cleaned.split(/[-–]/).map(part => part.trim());
-
-  // Convert parts to numbers
-  const values = parts.map(part => {
-      if (part.toLowerCase().includes('k')) {
-          return parseFloat(part) * 1000;
-      }
-      return parseFloat(part);
-  });
-
-  // Return the average if range, otherwise the single value
-  if (values.length === 2) {
-      return (values[0] + values[1]) / 2;
-  }
-
-  return values[0] || 0;
-};
-
-
-// Helper function to apply filter
-function applyFilter(state: ApplicationState, action: { payload: Partial<ApplicationsFilter>; type: string; }) {
-  const filter = state.filter;
-  const filterStages = filter.stage.map(stage => stage._id);
-  state.filteredApplications = state.applications.filter(application => {
-    const matchesSearch = filter.search
-      ? (
-        application.company.toLowerCase().includes(filter.search.toLowerCase()) ||
-        application.role.toLowerCase().includes(filter.search.toLowerCase())
-      )
-      : true;
-    const matchesLocation = filter.location.length ? filter.location.includes(application.location) : true;
-    const matchesStage = filter.stage.length ? filterStages.includes(application.stage._id) : true;
-    const matchesRank = filter.rank.length ? filter.rank.includes(application.rank) : true;
-    return matchesSearch && matchesLocation && matchesStage && matchesRank;
-  });
-
-  // Sorting
-  if (action.payload.sort) {
-    state.filteredApplications.sort((a, b) => {
-      if (action.payload.sort === 'company') {
-        return a.company.localeCompare(b.company);
-      } else if (action.payload.sort === 'role') {
-        return a.role.localeCompare(b.role);
-      } else if (action.payload.sort === 'url') {
-        return a.url.localeCompare(b.url);
-      } else if (action.payload.sort === 'location') {
-        return a.location.localeCompare(b.location);
-      } else if (action.payload.sort === 'stage') {
-        return a.stage.name.localeCompare(b.stage.name);
-      } else if (action.payload.sort === 'salary') {
-          const aSalary = parseSalary(a.salary);
-          const bSalary = parseSalary(b.salary);
-          return bSalary - aSalary;
-      } else if (action.payload.sort === 'rank') {
-        return a.rank - b.rank;
-      } else if (action.payload.sort === 'date') {
-        return new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime(); 
-      } 
-      return 0;
-    });
-  }
-}
 

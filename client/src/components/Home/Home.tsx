@@ -9,6 +9,8 @@ import { openEditorAdd } from '../../state/slices/applicationSlice';
 import ApplicationEditor from '../ApplicationEditor/ApplicationEditor';
 import Sidebar from '../../lib/sidebar/Sidebar';
 import Icon from '../../lib/icon/Icon';
+import TotalApplicationsChart from '../Statistics/TotalApplicationsChart/TotalApplicationsChart';
+import StatsWidget from '../../lib/StatsWidget/StatsWidget';
 
 const Home = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -25,9 +27,9 @@ const Home = () => {
     return (
         <div className={styles.home}>
             <div className={styles.charts}>
-                <div className={styles.chart}></div>
-                <div className={styles.chart}></div>
-                <div className={styles.chart}></div>
+                <div className={styles.chart}><StatsWidget title='Applications by Status'><></></StatsWidget></div>
+                <div className={styles.chart}><TotalApplicationsChart /></div>
+                <div className={styles.chart}><StatsWidget title='Salary Range'><></></StatsWidget></div>
             </div>
             <div className={styles.applicationsWrap}>
                 <div className={styles.applicationsHeader}>
