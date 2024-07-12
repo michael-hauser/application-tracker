@@ -10,7 +10,6 @@ import ApplicationEditor from '../ApplicationEditor/ApplicationEditor';
 import Sidebar from '../../lib/sidebar/Sidebar';
 import Icon from '../../lib/icon/Icon';
 import TotalApplicationsChart from '../Statistics/TotalApplicationsChart/TotalApplicationsChart';
-import StatsWidget from '../../lib/StatsWidget/StatsWidget';
 import ApplicationsStatusChart from '../Statistics/ApplicationsStatusChart/ApplicationsStatusChart';
 import SalaryRangeChart from '../Statistics/SalaryRangeChart/SalaryRangeChart';
 

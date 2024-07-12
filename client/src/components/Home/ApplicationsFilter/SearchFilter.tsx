@@ -4,7 +4,6 @@ import { filterApplications } from '../../../state/slices/applicationSlice';
 import { AppDispatch, RootState } from '../../../state/store';
 import { debounce } from 'lodash';
 import { inputStyles } from './filterStyles';
-import Icon from '../../../lib/icon/Icon';
 
 const SearchFilter: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -17,11 +16,12 @@ const SearchFilter: React.FC = () => {
     }, [filterSearch]);
 
     // Debounced function with lodash debounce
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedDispatch = useCallback(
         debounce((searchValue: string) => {
             dispatch(filterApplications({ search: searchValue }));
         }, 500),
-        [dispatch]
+        [debounce, dispatch, filterApplications]
     );
 
     // Handle search input change

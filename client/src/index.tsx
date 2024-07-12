@@ -5,6 +5,7 @@ import { store } from './state/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.scss';
+import SvgDefs from './styles/SvgDefs';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -12,6 +13,7 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <SvgDefs />
       <App />
     </Provider>
   </React.StrictMode>

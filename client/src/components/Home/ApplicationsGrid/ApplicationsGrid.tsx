@@ -16,17 +16,17 @@ const ApplicationsGrid = () => {
     const getStageColor = (stage: Stage) => {
         switch (stage.type) {
             case StageType.Init:
-                return styles.init;
+                return 'var(--InitGradient)';
             case StageType.Active1:
-                return styles.active1;
+                return 'var(--PrimaryGradient2)';
             case StageType.Active2:
-                return styles.active2;
+                return 'var(--ProgressGradient)';
             case StageType.Pause:
-                return styles.pause;
+                return 'var(--WarningGradient)'
             case StageType.Fail:
-                return styles.fail;
+                return 'var(--ErrorGradient)';
             case StageType.Success:
-                return styles.success;
+                return 'var(--SuccessGradient)';
             default:
                 return '';
         }
@@ -61,7 +61,7 @@ const ApplicationsGrid = () => {
                         <div className={`${styles.tableCell} ${styles.hideOnMobile}`}>{a.location}</div>
                         <div className={`${styles.tableCell} ${styles.hideOnMobile}`}>{a.salary}</div>
                         <div className={styles.tableCell}>
-                            <div className={styles.badge + ' ' + getStageColor(a.stage)}>{a.stage.name}</div>
+                            <div className={styles.badge} style={{ background: getStageColor(a.stage)}}>{a.stage.name}</div>
                         </div>
                         <div className={`${styles.tableCell} ${styles.hideOnMobile}`}>{a.rank}</div>
                     </div>

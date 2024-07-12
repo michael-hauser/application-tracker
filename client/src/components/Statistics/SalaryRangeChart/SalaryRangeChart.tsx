@@ -2,8 +2,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../state/store';
 import StatsWidget from '../../../lib/StatsWidget/StatsWidget';
-import { ResponsiveContainer, XAxis, Tooltip, AreaChart, Area } from 'recharts';
-import styles from './SalaryRangeChart.module.scss';
+import { ResponsiveContainer, Tooltip, AreaChart, Area } from 'recharts';
+import styles from '../ChartStyles.module.scss';
 import { parseSalary } from '../../../utils/parseSalary';
 import { openEditorEdit, setSelectedApplication } from '../../../state/slices/applicationSlice';
 
@@ -36,12 +36,6 @@ const SalaryRangeChart: React.FC = () => {
                         data={data}
                         onClick={(payload) => handleClick(payload)}
                     >
-                        <defs>
-                            <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="100%" gradientUnits="userSpaceOnUse">
-                                <stop offset="10%" stopColor="var(--Primary)" stopOpacity={1} />
-                                <stop offset="95%" stopColor="var(--Primary)" stopOpacity={0} />
-                            </linearGradient>
-                        </defs>
                         <Tooltip cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }} content={({ active, payload, label }) => {
                             return <div className={styles.tooltip}>
                                 <div className={styles.tooltipTitle}>{payload?.[0]?.payload.company}</div>

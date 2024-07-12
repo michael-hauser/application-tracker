@@ -1,13 +1,13 @@
 :root {
-  --InitGradient: linear-gradient(360deg, #c6ccd7 0%, #f0e6ed 100%);
+  --InitGradient: linear-gradient(360deg, #9ca6b9 0%, #d7cbd4 100%);
   --PrimaryGradient1: linear-gradient(180deg, #7e8cd8 0%, #6c90d6 100%);
   --PrimaryGradient1Hover: linear-gradient(180deg, #7281d4 0%, #5f87d3 100%);
   --PrimaryGradient1Focus: linear-gradient(180deg, #6273d0 0%, #4f7bcf 100%);
   --PrimaryGradient2: linear-gradient(360deg, #6c90d6 0%, #c4baeb 100%);
-  --ProgressGradient: linear-gradient(180deg, #ba74f1 0%, #7e2ac1 100%);
-  --SuccessGradient: linear-gradient(23.24deg, #4a966d 0%, #3cb875 100%);
-  --WarningGradient: linear-gradient(180deg, #f38320 0%, #d96907 100%);
-  --ErrorGradient: linear-gradient(180deg, #ef4d4d 0%, #b82828 100%);
+  --ProgressGradient: linear-gradient(180deg, #d4a5df 0%, #ab79d2 100%);
+  --SuccessGradient: linear-gradient(23.24deg, #51a477 0%, #a3c39d 100%);
+  --WarningGradient: linear-gradient(180deg, #f1c17e 0%, #e6852c 100%);
+  --ErrorGradient: linear-gradient(180deg, #e3938c 0%, #d96363 100%);
   --BackdropGradient: linear-gradient(180deg, #f9f9f9 37%, #f1f3f7 100%);
   --Font: #0b1e43;
   --FontShaded: #757585;
@@ -45,7 +45,8 @@
   --HeadingLg-font-size: 24px;
   --HeadingLg-font-family: Inter, sans-serif;
   --HeadingLg-font-weight: 700;
-
+  
+  
 
   /* App Variables */
   --breakpoint-xl: 1300px;
@@ -53,4 +54,7 @@
   --mobile-padding: 16px;
   --border-radius: 8px;
   --input-height: 2.4rem;
+
+  --card-box-shadow: inset 1px 2px 50px 0px rgba(0, 0, 255, 0.02), 
+                           0px 2px 4px 0px rgba(0, 0, 255, 0.02);
 }

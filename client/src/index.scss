@@ -93,6 +93,7 @@ h2 {
     border: none;
     background: var(--PrimaryGradient1);
     color: var(--FontInverse);
+    box-shadow: var(--card-box-shadow);
 
     &:hover {
         background: var(--PrimaryGradient1Hover);
@@ -108,6 +109,7 @@ h2 {
     border: 1px solid var(--Gray20);
     background-color: transparent;
     color: var(--Font);
+    box-shadow: var(--card-box-shadow);
 
     &:hover {
         background-color: rgba(0, 0, 0, 0.03);
