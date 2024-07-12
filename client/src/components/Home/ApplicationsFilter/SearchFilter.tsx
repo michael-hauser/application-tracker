@@ -31,10 +31,14 @@ const SearchFilter: React.FC = () => {
         debouncedDispatch(value);
     };
 
+
     return (
         <div>
             <input
-                style={inputStyles}
+                style={{
+                    ...inputStyles,
+                    width: '250px',
+                }}
                 type="text"
                 value={searchInput}
                 onChange={handleSearchInputChange}

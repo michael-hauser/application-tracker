@@ -44,3 +44,16 @@
     }
   }
 }
+
+@media (max-width: 600px) {
+  .home {
+    .charts {
+      flex-flow: column;
+      gap: 20px;
+
+      .chart {
+        height: 150px;
+      }
+    }
+  }
+}

@@ -123,6 +123,13 @@ const applicationSlice = createSlice({
     setSelectedApplication(state, action: PayloadAction<Application>) {
       state.selectedApplication = action.payload;
     },
+    setFilterToStage(state, action: PayloadAction<Stage>) {
+      state.filter = {
+        ...state.filter,
+        stage: action.payload ? [action.payload] : []
+      };
+      state.filteredApplications = applyApplicationsFilter(state.filter, state.applications);
+    },
     openEditorEdit(state) {
       state.editorMode = 'edit';
     },
@@ -195,6 +202,7 @@ const applicationSlice = createSlice({
 export const {
   filterApplications,
   resetFilter,
+  setFilterToStage,
   setSelectedApplication,
   openEditorAdd,
   openEditorEdit,
