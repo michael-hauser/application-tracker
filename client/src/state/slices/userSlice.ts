@@ -64,11 +64,11 @@ export const userSlice = createSlice({
         state.error = '';
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<IAuthModel>) => {
-        if(!action.payload.user || !action.payload.token) return;
+        if(!action.payload.user || !action.payload.token || !action.payload.csrfToken) return;
         state.status = 'idle';
         state.user = action.payload.user;
         state.error = '';
-        saveAuthToken(action.payload.token);
+        saveAuthToken(action.payload.token, action.payload.csrfToken);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -79,11 +79,11 @@ export const userSlice = createSlice({
         state.error = '';
       })
       .addCase(registerUser.fulfilled, (state, action: PayloadAction<IAuthModel>) => {
-        if(!action.payload.user || !action.payload.token) return;
+        if(!action.payload.user || !action.payload.token || !action.payload.csrfToken) return;
         state.status = 'idle';
         state.user = action.payload.user;
         state.error = '';
-        saveAuthToken(action.payload.token);
+        saveAuthToken(action.payload.token, action.payload.csrfToken);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -100,6 +100,7 @@ export const userSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message ?? 'Failed to fetch user details';
+        removeAuthToken();
       })
       .addCase(fetchUserDetails.pending, (state) => {
         state.status = 'loading';

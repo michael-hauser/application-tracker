@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { fetchUserDetails, selectUser, selectUserStatus } from './state/slices/userSlice';
+import axios from 'axios';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
@@ -10,11 +11,14 @@ import { AppDispatch } from './state/store';
 import Layout from './components/Layout/Layout';
 import styles from './App.module.scss';
 import AuthLayout from './components/Layout/AuthLayout';
+import Progress from './lib/progress/Progress';
 
 const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const user = useSelector(selectUser);
   const userStatus = useSelector(selectUserStatus);
+
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -23,7 +27,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   if (userStatus === 'loading') {
-    return <div>Loading...</div>; // Optionally, display a loading indicator
+    return <Progress fullScreen={true} />;
   }
 
   return (

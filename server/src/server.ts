@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import routes from './routes';
 import User from './models/User';
@@ -9,8 +10,10 @@ import Application from './models/Application';
 
 dotenv.config();
 
-const app = express();
 const PORT = process.env.PORT;
+const COOKIES_SECRET = "super cookie secret";
+
+const app = express();
 
 // Middleware
 app.use(cors({
@@ -18,6 +21,7 @@ app.use(cors({
   credentials: true, // Enable credentials (cookies, authorization headers, etc.)
 }));
 app.use(express.json());
+app.use(cookieParser(COOKIES_SECRET));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI!)

@@ -9,8 +9,9 @@ const LogoutButton: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate('/');
+    dispatch(logoutUser()).finally(() => { 
+      navigate('/login');
+    });
   };
 
   return (

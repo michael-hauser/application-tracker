@@ -2,6 +2,7 @@ import express, { Request } from 'express';
 import { IUser } from '../models/User';
 import { loginUser, readUser, registerUser } from '../controllers/userController';
 import auth, { CustomRequest } from '../middleware/auth';
+import { csrfErrorHandler, doubleCsrfProtection, generateToken } from '../middleware/csrf';
 
 const router = express.Router();
 
@@ -23,13 +24,14 @@ router.post('/register', async (req: Request, res) => {
     email: req.body.email,
     password: req.body.password,
   };
-  const registeredUser = await registerUser(userData);
-  if (registeredUser.error) {
+  const user = await registerUser(userData);
+  if (user.error) {
     return res.status(400).json({
-      error: registeredUser.error,
+      error: user.error,
     });
   }
-  return res.status(201).json(registeredUser);
+  const csrfToken = generateToken(req, res);
+  return res.status(201).json({...user, csrfToken});
 });
 
 /**
@@ -49,13 +51,14 @@ router.post('/login', async (req: Request, res) => {
     email: req.body.email,
     password: req.body.password,
   };
-  const loggedInUser = await loginUser(userData);
+  const user = await loginUser(userData);
 
-  if (loggedInUser && !loggedInUser.error) {
-    return res.status(200).json(loggedInUser);
+  if (user && !user.error) {
+    const csrfToken = generateToken(req, res);
+    return res.status(200).json({...user, csrfToken});
   } else {
     return res.status(400).json({
-      error: loggedInUser.error,
+      error: user.error,
     });
   }
 });
@@ -66,7 +69,7 @@ router.post('/login', async (req: Request, res) => {
  * @param req - Express request object with CustomRequest interface.
  * @param res - Express response object.
  */
-router.post('/logout', auth, async (req: CustomRequest, res) => {
+router.post('/logout', auth, doubleCsrfProtection, csrfErrorHandler, async (req: CustomRequest, res: any) => {
   if (req.user) {
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;
@@ -85,7 +88,7 @@ router.post('/logout', auth, async (req: CustomRequest, res) => {
  * @param req - Express request object with CustomRequest interface.
  * @param res - Express response object.
  */
-router.post('/logoutall', auth, async (req: CustomRequest, res) => {
+router.post('/logoutall', auth, doubleCsrfProtection, csrfErrorHandler, async (req: CustomRequest, res: any) => {
   if (req.user) {
     req.user.tokens = [];
     await req.user.save();
@@ -101,7 +104,7 @@ router.post('/logoutall', auth, async (req: CustomRequest, res) => {
  * @param req - Express request object with CustomRequest interface.
  * @param res - Express response object.
  */
-router.get('/profile', auth, async (req: CustomRequest, res) => {
+router.get('/profile', auth, doubleCsrfProtection, csrfErrorHandler, async (req: CustomRequest, res: any) => {
   try {
     const user = await readUser(req.user?.id);
     if (!user) {
