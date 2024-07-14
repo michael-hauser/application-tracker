@@ -13,7 +13,10 @@ const app = express();
 const PORT = process.env.PORT;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://127.0.0.1:3001', // Replace with your frontend URL during development
+  credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+}));
 app.use(express.json());
 
 // Connect to MongoDB
@@ -22,7 +25,7 @@ mongoose.connect(process.env.MONGO_URI!)
     .catch(err => console.error('Could not connect to MongoDB', err));
 
 // Routes
-app.use('/api', routes); // Mount all routes under /api
+app.use('/api', routes);
 
 // Start server
 app.listen(PORT, () => {

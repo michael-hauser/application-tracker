@@ -1,4 +1,5 @@
 // config.js
 module.exports = {
-    apiPath: 'http://localhost:5013/api',
+    server: 'http://127.0.0.1:5013',
+    apiPath: 'http://127.0.0.1:5013/api',
 };
