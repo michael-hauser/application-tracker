@@ -1,3 +1,4 @@
+import MongoStore from 'connect-mongo';
 import express from 'express';
 import session from 'express-session';
 
@@ -7,6 +8,9 @@ export const getSessionConfig = (app: express.Express) => {
 
     const dev: session.SessionOptions = {
         secret: secret,
+        resave: true,
+        saveUninitialized: true,
+        store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
         cookie: {
             secure: false,
         }

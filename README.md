@@ -35,9 +35,20 @@ A MERN stack application for tracking and managing job applications.
 
 3. Create a `.env` file in the `server` directory and add the following environment variables:
    ```plaintext
-   PORT=your_server_port
-   MONGO_URI=your_mongo_uri
-   JWT_SECRET=your_jwt_secret
+   MONGO_URI=
+   appName=
+   JWT_SECRET=
+   PORT=
+   CLIENT_ORIGIN=
+   COOKIES_SECRET=
+   CSRF_SECRET=
+   SESSION_SECRET=
+   ```
+
+4. Create a `.env` file in the `client` directory and add the following environment variables:
+   ```plaintext
+   HOST=
+   PORT=
    ```
 
 4. Start the development servers:
