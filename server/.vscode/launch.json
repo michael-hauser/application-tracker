@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Server",
+        "preLaunchTask": "tsc: build - tsconfig.json",
+        "program": "${workspaceFolder}/src/server.ts",
+        "outFiles": [
+          "${workspaceFolder}/dist/**/*.js"
+        ],
+        "envFile": "${workspaceFolder}/.env",
+        "sourceMaps": true,
+        "skipFiles": ["<node_internals>/**"],
+        "cwd": "${workspaceFolder}"  // Set the current working directory to /server
+      },
+    ]
+  }
+  

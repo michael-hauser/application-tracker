@@ -1,8 +1,8 @@
 import express, { Request } from 'express';
 import { IUser } from '../models/User';
 import { loginUser, readUser, registerUser } from '../controllers/userController';
-import auth, { CustomRequest } from '../middleware/auth';
-import { csrfErrorHandler, doubleCsrfProtection, generateToken } from '../middleware/csrf';
+import auth, { CustomRequest, getTokenFromRequest } from '../middleware/auth';
+import { addCsrfToken, csrfErrorHandler, doubleCsrfProtection, removeCsrfToken } from '../middleware/csrf';
 
 const router = express.Router();
 
@@ -12,26 +12,35 @@ const router = express.Router();
  * @param req - Express request object.
  * @param res - Express response object.
  */
-router.post('/register', async (req: Request, res) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '')
+router.post('/register', async (req: Request, res: any) => {
+  const token = getTokenFromRequest(req);
+
   if (token) {
     return res.status(400).json({
       error: 'User can only register once',
     });
   }
+
   const userData: Partial<IUser> = {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
   };
+
   const user = await registerUser(userData);
+
   if (user.error) {
     return res.status(400).json({
       error: user.error,
     });
   }
-  const csrfToken = generateToken(req, res);
-  return res.status(201).json({...user, csrfToken});
+
+  try {
+    const csrfToken = addCsrfToken(req, res, user.token);
+    return res.status(201).json({ ...user, csrfToken });
+  } catch (error: any) {
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 /**
@@ -40,26 +49,33 @@ router.post('/register', async (req: Request, res) => {
  * @param req - Express request object.
  * @param res - Express response object.
  */
-router.post('/login', async (req: Request, res) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '')
+router.post('/login', async (req: Request, res: any) => {
+  const token = getTokenFromRequest(req);
+
   if (token) {
     return res.status(400).json({
       error: 'User can only log in once',
     });
   }
+
   const userData: Partial<IUser> = {
     email: req.body.email,
     password: req.body.password,
   };
+
   const user = await loginUser(userData);
 
-  if (user && !user.error) {
-    const csrfToken = generateToken(req, res);
-    return res.status(200).json({...user, csrfToken});
-  } else {
+  if (!user || user.error) {
     return res.status(400).json({
       error: user.error,
     });
+  }
+
+  try {
+    const csrfToken = addCsrfToken(req, res, user.token);
+    return res.status(200).json({ ...user, csrfToken });
+  } catch (error: any) {
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
@@ -77,6 +93,8 @@ router.post('/logout', auth, doubleCsrfProtection, csrfErrorHandler, async (req:
     await req.user.save();
   }
 
+  removeCsrfToken(req, res);
+
   return res.status(200).json({
     message: 'User logged out successfully.',
   });
@@ -93,6 +111,9 @@ router.post('/logoutall', auth, doubleCsrfProtection, csrfErrorHandler, async (r
     req.user.tokens = [];
     await req.user.save();
   }
+  
+  removeCsrfToken(req, res);
+
   return res.status(200).json({
     message: 'User logged out from all devices successfully.',
   });
@@ -118,3 +139,4 @@ router.get('/profile', auth, doubleCsrfProtection, csrfErrorHandler, async (req:
 });
 
 export default router;
+

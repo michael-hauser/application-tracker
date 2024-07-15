@@ -17,6 +17,10 @@ interface DecodedToken {
   id: string;
 }
 
+export const getTokenFromRequest = (req: CustomRequest) => {
+  return req.header('Authorization')?.replace('Bearer ', '');
+}
+
 /**
  * Middleware function to authenticate requests using JWT.
  * @param req - Express request object with CustomRequest interface.
@@ -25,7 +29,7 @@ interface DecodedToken {
  */
 const auth = async (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const token = getTokenFromRequest(req);
     if (!token) {
       throw new Error('Authentication failed. Token missing.');
     }

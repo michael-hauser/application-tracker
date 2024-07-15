@@ -11,17 +11,16 @@ import Application from './models/Application';
 dotenv.config();
 
 const PORT = process.env.PORT;
-const COOKIES_SECRET = "super cookie secret";
 
 const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'http://127.0.0.1:3001', // Replace with your frontend URL during development
-  credentials: true, // Enable credentials (cookies, authorization headers, etc.)
+  origin: process.env.CLIENT_ORIGIN,
+  credentials: true,
 }));
 app.use(express.json());
-app.use(cookieParser(COOKIES_SECRET));
+app.use(cookieParser(process.env.COOKIES_SECRET));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI!)

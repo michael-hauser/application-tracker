@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { fetchUserDetails, selectUser, selectUserStatus } from './state/slices/userSlice';
-import axios from 'axios';
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
@@ -17,9 +16,7 @@ const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const user = useSelector(selectUser);
   const userStatus = useSelector(selectUserStatus);
-
-  axios.defaults.withCredentials = true;
-
+  
   useEffect(() => {
     if (isAuthenticated()) {
       dispatch(fetchUserDetails());
