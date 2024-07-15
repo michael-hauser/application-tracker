@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '../../../state/store';
 import { filterApplications } from '../../../state/slices/applicationSlice';
 import { Stage } from '../../../models/Stage.model';
 import Select from 'react-select';
-import { filterStyles } from './filterStyles';
+import { filterStyles, filterTheme } from './filterStyles';
 
 const StageFilter: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -30,6 +30,7 @@ const StageFilter: React.FC = () => {
         <Select
             isMulti
             styles={filterStyles}
+            theme={filterTheme}
             value={selectedStages.map(stage => ({ value: stage._id, label: stage.name }))}
             onChange={handleStageChange}
             options={stageOptions}

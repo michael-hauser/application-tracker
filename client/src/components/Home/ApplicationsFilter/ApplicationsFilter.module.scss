@@ -4,4 +4,8 @@
     flex-flow: row wrap;
     gap: 8px;
     padding: 8px;
+
+    svg {
+        color: var(--FontShaded);
+    }
 }

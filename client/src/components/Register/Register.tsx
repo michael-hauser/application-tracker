@@ -5,6 +5,21 @@ import { AppDispatch } from '../../state/store';
 import { registerUser, selectUserError, selectUserStatus } from '../../state/slices/userSlice';
 import styles from './Register.module.scss';
 
+/**
+ * Checks if the password meets the standard requirements.
+ * @param password - The password to be validated.
+ * @returns A boolean indicating whether the password is valid or not.
+ */
+const isPasswordValid = (password: string): boolean => {
+  const minLength = 8;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>-]/.test(password);
+
+  return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+};
+
 const Register: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +42,11 @@ const Register: React.FC = () => {
 
     if (password !== confirmPassword) {
       setLocalError('Passwords do not match');
+      return;
+    }
+
+    if (!isPasswordValid(password)) {
+      setLocalError('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
       return;
     }
 
@@ -81,7 +101,7 @@ const Register: React.FC = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <button className='primary-button' type="submit" disabled={status === 'loading'}>
+        <button className="primary-button" type="submit" disabled={status === 'loading'}>
           {status === 'loading' ? 'Registering...' : 'Register'}
         </button>
       </form>

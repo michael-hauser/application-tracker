@@ -4,6 +4,7 @@ import { filterApplications } from '../../../state/slices/applicationSlice';
 import { AppDispatch, RootState } from '../../../state/store';
 import { debounce } from 'lodash';
 import { inputStyles } from './filterStyles';
+import Icon from '../../../lib/icon/Icon';
 
 const SearchFilter: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -33,11 +34,16 @@ const SearchFilter: React.FC = () => {
 
 
     return (
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', width: '250px'}}>
+            <div style={{ color: inputStyles.inactiveColor, position: 'absolute', left: '8px' }} >
+                <Icon icon="magnifyer" />
+            </div>
             <input
                 style={{
                     ...inputStyles,
-                    width: '250px',
+                    paddingLeft: '32px',
+                    position: 'absolute',
+                    width: '100%',
                 }}
                 type="text"
                 value={searchInput}

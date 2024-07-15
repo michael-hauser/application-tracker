@@ -15,7 +15,7 @@ const LogoutButton: React.FC = () => {
   };
 
   return (
-    <button className='primary-button' onClick={handleLogout}>Logout</button>
+    <button style={{ width: '100%' }} className='tertiary-button' onClick={handleLogout}>Logout</button>
   );
 };
 

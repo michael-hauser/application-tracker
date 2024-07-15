@@ -1,6 +1,21 @@
 import User, { IUser } from '../models/User';
 
 /**
+ * Checks if the password meets the standard requirements.
+ * @param password - The password to be validated.
+ * @returns A boolean indicating whether the password is valid or not.
+ */
+const isPasswordValid = (password: string): boolean => {
+  const minLength = 8;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>-]/.test(password);
+
+  return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+};
+
+/**
  * Registers a new user.
  * @param user - Partial user object containing name, email, and password.
  * @returns A promise that resolves with the registered user and authentication token, or an error object.
@@ -12,12 +27,20 @@ export const registerUser = async (user: Partial<IUser>) => {
       error: 'Please provide all the required fields',
     };
   }
+
+  if (!isPasswordValid(password)) {
+    return {
+      error: 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+    };
+  }
+
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     return {
       error: 'User with that email already exists.',
     };
   }
+
   const newUser = new User({ name, email, password });
   await newUser.save();
   const token = await newUser.generateAuthToken();
@@ -26,6 +49,7 @@ export const registerUser = async (user: Partial<IUser>) => {
     token,
   };
 };
+
 
 /**
  * Logs in an existing user.

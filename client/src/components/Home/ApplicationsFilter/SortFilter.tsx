@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { filterApplications, SortOptions } from '../../../state/slices/applicationSlice';
 import { AppDispatch, RootState } from '../../../state/store';
 import Select from 'react-select';
-import { filterStyles } from './filterStyles';
+import { filterStyles, filterTheme } from './filterStyles';
 
 const SortFilter: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -32,6 +32,7 @@ const SortFilter: React.FC = () => {
     return (
         <Select
             styles={filterStyles}
+            theme={filterTheme}
             value={value === SortOptions.none ? null : sortOptions.find(option => option.value === value)}
             onChange={handleSortOptionChange}
             options={sortOptions}

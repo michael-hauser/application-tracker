@@ -1,0 +1,53 @@
+.userMenu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  height: 32px;
+
+  .button {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+  }
+
+  .dropdownMenu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: var(--Background);
+    border: 1px solid var(--Gray10);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 200px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+
+    .avatarWrap {
+      padding: 8px;
+    }
+
+    .menuUserName {
+      font-weight: 700;
+    }
+
+    .dropdownItem {
+      padding: 8px 16px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+
+      &:hover {
+        background-color: var(--Gray5);
+      }
+    }
+  }
+}

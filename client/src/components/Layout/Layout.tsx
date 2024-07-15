@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import logo from './Logo.png';
 import styles from './Layout.module.scss';
-import LogoutButton from './logoutButton/logoutButton';
+import UserMenu from './UserMenu/UserMenu';
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Link to="/">
           <img className={styles.logo} src={logo} alt="Logo" />
         </Link>
-        <LogoutButton />
+        <UserMenu />
       </header>
       <main className={styles.main}>
         {children}

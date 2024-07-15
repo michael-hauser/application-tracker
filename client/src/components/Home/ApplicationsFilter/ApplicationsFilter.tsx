@@ -24,7 +24,7 @@ const ApplicationsFilter: React.FC = () => {
             <StageFilter />
             <RankFilter />
             <SortFilter />
-            <button className='secondary-button' onClick={reset}>Reset Filters</button>
+            <button className='tertiary-button' onClick={reset}>Reset Filters</button>
         </div>
     );
 };

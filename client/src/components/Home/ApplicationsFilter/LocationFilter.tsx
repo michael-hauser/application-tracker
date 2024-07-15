@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../state/store';
 import { filterApplications } from '../../../state/slices/applicationSlice';
 import Select from 'react-select';
-import { filterStyles } from './filterStyles';
+import { filterStyles, filterTheme } from './filterStyles';
 
 const LocationFilter: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -28,6 +28,7 @@ const LocationFilter: React.FC = () => {
         <Select
             isMulti
             styles={filterStyles}
+            theme={filterTheme}
             value={selectedLocations.map(location => ({ value: location, label: location }))}
             onChange={handleLocationChange}
             options={locationOptions}

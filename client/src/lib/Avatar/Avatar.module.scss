@@ -1,0 +1,43 @@
+.avatarWrapper {
+    display: flex;
+    align-items: center;
+    --size: 32px;
+    pointer-events: none;
+    user-select: none;
+
+    &.s {
+        --size: 16px;
+    }
+
+    &.m {
+        --size: 32px;
+    }
+
+    &.l {
+        --size: 48px;
+    }
+
+    width: var(--size);
+    height: var(--size);
+    font-size: var(--size);
+
+    .avatar {
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+    }
+
+    .initials {
+        width: var(--size);
+        height: var(--size);
+        line-height: 0.5em;
+        padding: 0;
+        margin: 0;
+        border-radius: 50%;
+        font-size: 0.5em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--Font);
+    }
+}
