@@ -1,12 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import routes from './routes';
 import User from './models/User';
 import Stage from './models/Stage';
 import Application from './models/Application';
+import { getSessionConfig } from './middleware/session';
 
 dotenv.config();
 
@@ -20,6 +22,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
+app.use(session(getSessionConfig(app)));
 app.use(cookieParser(process.env.COOKIES_SECRET));
 
 // Connect to MongoDB

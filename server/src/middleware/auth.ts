@@ -5,7 +5,7 @@ import User, { IUser } from '../models/User';
 /**
  * Extended Request interface with optional user and token properties.
  */
-export interface CustomRequest extends Request {
+export interface AuthRequest extends Request {
   user?: IUser;
   token?: string;
 }
@@ -17,9 +17,19 @@ interface DecodedToken {
   id: string;
 }
 
-export const getTokenFromRequest = (req: CustomRequest) => {
-  return req.header('Authorization')?.replace('Bearer ', '');
-}
+/**
+ * Extracts the token from the Authorization header.
+ * @param req - Express request object with CustomRequest interface.
+ * @returns The token if present and correctly formatted, otherwise undefined.
+ */
+export const getTokenFromRequest = (req: AuthRequest) => {
+  const authHeader = req.header('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return undefined;
+  }
+  const token = authHeader.replace('Bearer ', '');
+  return token || undefined;
+};
 
 /**
  * Middleware function to authenticate requests using JWT.
@@ -27,7 +37,7 @@ export const getTokenFromRequest = (req: CustomRequest) => {
  * @param res - Express response object.
  * @param next - Express next middleware function.
  */
-const auth = async (req: CustomRequest, res: Response, next: NextFunction) => {
+const auth = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const token = getTokenFromRequest(req);
     if (!token) {

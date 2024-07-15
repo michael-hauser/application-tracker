@@ -1,51 +1,61 @@
-.applicationsGrid {
-    height: auto;
+.applicationsGridContainer {
+  width: 100%;
+  position: relative;
+
+  .applicationsGrid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     display: grid;
   
     .tableRow,
     .tableHead {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      cursor: pointer;
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        cursor: pointer;
   
-      .tableCell {
-        padding: 16px;
-        overflow: hidden;
-        text-wrap: nowrap;
-      }
+        .tableCell {
+            padding: 16px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
     }
-
+  
     .tableRow {
         &:hover {
             background-color: var(--Gray5);
         }
     }
-
+  
     .tableHead {
-      font-weight: var(--Heading-font-weight);
-      border-bottom: 1px solid var(--Gray10);
+        font-weight: var(--Heading-font-weight);
+        border-bottom: 1px solid var(--Gray10);
     }
-
+  
     .badge {
-      width: auto;
-      display: inline-block;
-      padding: 2px 6px;
-      border-radius: var(--border-radius);
-      color: var(--FontInverse);
+        width: auto;
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: var(--border-radius);
+        color: var(--FontInverse);
     }
   }
+}
 
-
-  @media (max-width: 600px) {
+@media (max-width: 600px) {
+  .applicationsGridContainer {
     .applicationsGrid {
+        .tableRow,
+        .tableHead {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
 
-    .tableRow,
-    .tableHead {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .hideOnMobile {
-      display: none;
+        .hideOnMobile {
+            display: none;
+        }
     }
   }
-  }
+}

@@ -4,7 +4,8 @@ import express, { NextFunction } from 'express';
 import authRoutes from './authRoutes';
 import { loginUser, registerUser, readUser} from '../controllers/userController';
 import { IUser } from '../models/User';
-import auth from '../middleware/auth';
+import auth, { getTokenFromRequest } from '../middleware/auth';
+import { get } from 'http';
 
 const app = express();
 app.use(express.json());
@@ -38,6 +39,9 @@ jest.mock('../middleware/auth', () => ({
     req.token = 'mockToken'; // Simulate setting token in request
     next(); // Call next to simulate middleware chain
   }),
+  getTokenFromRequest: (req: any) => {
+    return req.header('Authorization')?.replace('Bearer ', '');
+  },
 }));
 
 describe('authRoutes', () => {
@@ -51,6 +55,15 @@ describe('authRoutes', () => {
 
       // Mock registerUser function to return registered user data
       (registerUser as jest.Mock).mockResolvedValue(mockUserData);
+
+      // const mockUserProfile = {
+      //   id: 'mockUserId',
+      //   name: 'John Doe',
+      //   email: 'john.doe@example.com',
+      // };
+
+      // // Mock readUser function to return user profile
+      // (readUser as jest.Mock).mockResolvedValue(mockUserProfile);
 
       // Make a request using supertest
       const res = await request(app).post('/register').send(mockUserData);

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { fetchUserProfileAPI, loginUserAPI, looutUserAPI, registerUserAPI } from '../../services/userService';
-import { saveAuthToken, removeAuthToken, isAuthenticated } from '../../utils/auth';
+import { saveAuthToken, removeAuthToken, isAuthenticated, getCsrfToken } from '../../utils/auth';
 import { IAuthModel, IUser } from '../../models/User.model';
 import createCustomAsyncThunk from '../../utils/createCustomAsyncThunk';
 
@@ -20,6 +20,7 @@ const initialState: UserState = {
 export const loginUser = createCustomAsyncThunk(
   'user/loginUser',
   async (credentials: { email: string; password: string }) => {
+    await getCsrfToken();
     const response = await loginUserAPI(credentials);
     return response.data;
   }
@@ -28,6 +29,7 @@ export const loginUser = createCustomAsyncThunk(
 export const registerUser = createCustomAsyncThunk(
   'user/registerUser',
   async (user: { name: string; email: string; password: string; }) => {
+    await getCsrfToken();
     const response = await registerUserAPI(user);
     return response.data;
   },
@@ -64,11 +66,11 @@ export const userSlice = createSlice({
         state.error = '';
       })
       .addCase(loginUser.fulfilled, (state, action: PayloadAction<IAuthModel>) => {
-        if(!action.payload.user || !action.payload.token || !action.payload.csrfToken) return;
+        if(!action.payload.user || !action.payload.token) return;
         state.status = 'idle';
         state.user = action.payload.user;
         state.error = '';
-        saveAuthToken(action.payload.token, action.payload.csrfToken);
+        saveAuthToken(action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -79,11 +81,11 @@ export const userSlice = createSlice({
         state.error = '';
       })
       .addCase(registerUser.fulfilled, (state, action: PayloadAction<IAuthModel>) => {
-        if(!action.payload.user || !action.payload.token || !action.payload.csrfToken) return;
+        if(!action.payload.user || !action.payload.token) return;
         state.status = 'idle';
         state.user = action.payload.user;
         state.error = '';
-        saveAuthToken(action.payload.token, action.payload.csrfToken);
+        saveAuthToken(action.payload.token);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed';

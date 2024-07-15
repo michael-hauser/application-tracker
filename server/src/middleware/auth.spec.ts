@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 const mockingoose = require("mockingoose");
 import { Request, Response, NextFunction } from 'express';
 import supertest from 'supertest';
-import auth, { CustomRequest } from './auth';
+import auth, { AuthRequest, getTokenFromRequest } from './auth';
 import User, { IUser } from '../models/User';
 
 // Mock User model methods
@@ -19,14 +19,14 @@ const mockUser: Partial<IUser> = {
   };
 
 describe('auth middleware', () => {
-  let req: Partial<CustomRequest>;
+  let req: Partial<AuthRequest>;
   let res: any; // Mocked Response object
   let next: NextFunction;
 
   beforeEach(() => {
     req = {
       header: jest.fn().mockReturnValue('Bearer validToken'),
-    } as Partial<CustomRequest>;
+    } as Partial<AuthRequest>;
     res = {
       status: jest.fn().mockReturnThis(),
       send: jest.fn().mockReturnThis(),
@@ -64,7 +64,7 @@ describe('auth middleware', () => {
   it('should send 401 error when token is missing', async () => {
     req.header = jest.fn().mockReturnValue(undefined);
 
-    await auth(req as CustomRequest, res as Response, next);
+    await auth(req as AuthRequest, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.send).toHaveBeenCalledWith({ error: 'Authentication failed.' });
@@ -79,7 +79,7 @@ describe('auth middleware', () => {
       throw new Error('Invalid token');
     });
 
-    await auth(req as CustomRequest, res as Response, next);
+    await auth(req as AuthRequest, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.send).toHaveBeenCalledWith({ error: 'Authentication failed.' });
@@ -93,10 +93,48 @@ describe('auth middleware', () => {
     // Mock jwt.verify() to return the decoded token
     (jwt.verify as jest.Mock).mockReturnValue({ _id: mockUser._id });
 
-    await auth(req as CustomRequest, res as Response, next);
+    await auth(req as AuthRequest, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.send).toHaveBeenCalledWith({ error: 'Authentication failed.' });
     expect(next).not.toHaveBeenCalled();
+  });
+
+  describe('getTokenFromRequest', () => {
+    it('should return the token when the Authorization header is valid', () => {
+      const req: Partial<AuthRequest> = {
+        header: jest.fn().mockReturnValue('Bearer validToken'),
+      };
+  
+      const token = getTokenFromRequest(req as AuthRequest);
+      expect(token).toBe('validToken');
+    });
+  
+    it('should return undefined when the Authorization header is missing', () => {
+      const req: Partial<AuthRequest> = {
+        header: jest.fn().mockReturnValue(undefined),
+      };
+  
+      const token = getTokenFromRequest(req as AuthRequest);
+      expect(token).toBeUndefined();
+    });
+  
+    it('should return undefined when the Authorization header does not start with Bearer', () => {
+      const req: Partial<AuthRequest> = {
+        header: jest.fn().mockReturnValue('InvalidHeaderFormat'),
+      };
+  
+      const token = getTokenFromRequest(req as AuthRequest);
+      expect(token).toBeUndefined();
+    });
+  
+    it('should return undefined when the Authorization header is Bearer but no token', () => {
+      const req: Partial<AuthRequest> = {
+        header: jest.fn().mockReturnValue('Bearer '),
+      };
+  
+      const token = getTokenFromRequest(req as AuthRequest);
+      expect(token).toBeUndefined();
+    });
   });
 });
