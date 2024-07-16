@@ -12,9 +12,7 @@ import Stage from './models/Stage';
 import Application from './models/Application';
 import { getSessionConfig } from './middleware/session';
 
-if (process.env.NODE_ENV === 'development') {
-  dotenv.config();
-}
+dotenv.config();
 
 const PORT = process.env.PORT;
 
