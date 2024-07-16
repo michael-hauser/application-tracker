@@ -132,3 +132,5 @@ dist
 
 #OSX
 .DS_Store
+
+.amplify-hosting
