@@ -7,8 +7,7 @@
       "build": "npm run build-frontend && npm run build-server && npm run copy-frontend",
       "build-frontend": "NODE_ENV=production cd ./client && npm ci --cache .npm --prefer-offline && npm run build",
       "copy-frontend": "mkdir -p ./server/dist/build && cp -R ./client/build/. ./server/dist/build",
-      "build-server": "NODE_ENV=production cd ./server && npm ci --cache .npm --prefer-offline && npm run build",
-      "postbuild": "chmod +x bin/postbuild.sh && ./bin/postbuild.sh"
+      "build-server": "NODE_ENV=production cd ./server && npm ci --cache .npm --prefer-offline && npm run build"
     },
     "author": "",
     "license": "ISC"
