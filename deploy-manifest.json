@@ -14,7 +14,7 @@
       {
         "name": "default",
         "runtime": "nodejs18.x",
-        "entrypoint": "./server/dist/server.js"
+        "entrypoint": "server.js"
       }
     ]
   }
