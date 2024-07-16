@@ -10,7 +10,7 @@
     "copy-frontend-dist": "mkdir -p dist/build && cp -R ../client/build/. dist/build",
     "serve": "NODE_ENV=production node dist/server.js",
     "test": "NODE_ENV=development jest",
-    "init-data": "NODE_ENV=development npm run build && node dist/tools/initWithSampleData.js"
+    "init-data": "NODE_ENV=development tsc && node dist/tools/initWithSampleData.js"
   },
   "keywords": [],
   "author": "",
