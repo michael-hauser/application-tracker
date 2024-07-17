@@ -18,5 +18,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: docker build . --file Dockerfile --tag michaelhauser/application-tracker:${{ github.ref_name }}-$(date +%s)
