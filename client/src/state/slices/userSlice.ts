@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { fetchUserProfileAPI, loginUserAPI, looutUserAPI, registerUserAPI } from '../../services/userService';
-import { saveAuthToken, removeAuthToken, isAuthenticated, getCsrfToken } from '../../utils/auth';
+import { saveAuthToken, removeAuthToken, isAuthenticated } from '../../utils/auth';
 import { IAuthModel, IUser } from '../../models/User.model';
 import createCustomAsyncThunk from '../../utils/createCustomAsyncThunk';
 
@@ -20,7 +20,6 @@ const initialState: UserState = {
 export const loginUser = createCustomAsyncThunk(
   'user/loginUser',
   async (credentials: { email: string; password: string }) => {
-    await getCsrfToken();
     const response = await loginUserAPI(credentials);
     return response.data;
   }
@@ -29,7 +28,6 @@ export const loginUser = createCustomAsyncThunk(
 export const registerUser = createCustomAsyncThunk(
   'user/registerUser',
   async (user: { name: string; email: string; password: string; }) => {
-    await getCsrfToken();
     const response = await registerUserAPI(user);
     return response.data;
   },

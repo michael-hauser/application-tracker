@@ -3,9 +3,9 @@ import { Schema, model, Types, Document } from 'mongoose';
 // Interface for Application document
 export interface IApplication extends Document {
     company: string;
-    role: string;
-    url: string;
-    location: string;
+    role?: string;
+    url?: string;
+    location?: string;
     salary?: string;
     stage: Types.ObjectId; 
     rank: number;
@@ -14,14 +14,15 @@ export interface IApplication extends Document {
     dateApplied?: Date;
     user: Types.ObjectId;
     comments?: string;
+    jobDescription?: string;
 }
 
 // Define schema for Application
 const ApplicationSchema = new Schema({
     company: { type: String, required: true },
-    role: { type: String, required: true },
-    url: { type: String, required: true },
-    location: { type: String, required: true },
+    role: { type: String },
+    url: { type: String },
+    location: { type: String },
     salary: { type: String },
     stage: { type: Types.ObjectId, ref: 'Stage', required: true },
     rank: { type: Number },
@@ -29,7 +30,8 @@ const ApplicationSchema = new Schema({
     dateModified: { type: Date, default: Date.now },
     dateApplied: { type: Date },
     user: { type: Types.ObjectId, ref: 'User', required: true },
-    comments: { type: String }
+    comments: { type: String },
+    jobDescription: { type: String }
 });
 
 // Create and export Application model

@@ -12,6 +12,7 @@ import Progress from '../../lib/progress/Progress';
 const ApplicationEditor: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const selectedApplication = useSelector((state: RootState) => state.application.selectedApplication);
+    const error = useSelector((state: RootState) => state.application.error);
     const stages = useSelector(selectStages);
     const mode = useSelector((state: RootState) => state.application.editorMode);
 
@@ -63,21 +64,22 @@ const ApplicationEditor: React.FC = () => {
         setIsDirty(true);
     };
 
-    const handleSave = () => {
+    const  handleSave = async () => {
+        let result;
+        setIsSaving(true);
+
         if (applicationData && mode === 'edit' && isDirty) {
-            setIsSaving(true);
-            dispatch(updateApplication(applicationData)).then(() => {
-                setIsDirty(false);
-                setIsSaving(false);
-                dispatch(closeEditor());
-            });
+            result = await dispatch(updateApplication(applicationData));
         } else if (applicationData && mode === 'add') {
-            setIsSaving(true);
-            dispatch(addApplication(applicationData)).then(() => {
-                setIsDirty(false);
-                setIsSaving(false);
-                dispatch(closeEditor());
-            });
+            result = await dispatch(addApplication(applicationData))
+        } else return;
+
+        if (updateApplication.fulfilled.match(result)) {
+            setIsDirty(false);
+            setIsSaving(false);
+            dispatch(closeEditor());
+        } else {
+            setIsSaving(false);
         }
     };
 
@@ -105,6 +107,7 @@ const ApplicationEditor: React.FC = () => {
     return (
         <div className={styles.applicationEditor}>
             <h1>{mode === 'add' ? 'Add Application' : 'Edit Application'}</h1>
+            {error && <div className={styles.error}>{error}</div>}
             <div className={styles.formGroup}>
                 <label>Company</label>
                 <input

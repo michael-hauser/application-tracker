@@ -5,7 +5,7 @@ import { fetchUserDetails, selectUser, selectUserStatus } from './state/slices/u
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
-import { isAuthenticated } from './utils/auth';
+import { getCsrfToken, isAuthenticated } from './utils/auth';
 import { AppDispatch } from './state/store';
 import Layout from './components/Layout/Layout';
 import styles from './App.module.scss';
@@ -19,6 +19,7 @@ const App: React.FC = () => {
   const userStatus = useSelector(selectUserStatus);
   
   useEffect(() => {
+    getCsrfToken();
     if (isAuthenticated()) {
       dispatch(fetchUserDetails());
     }

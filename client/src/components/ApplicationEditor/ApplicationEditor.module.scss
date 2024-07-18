@@ -8,8 +8,10 @@
             display: block;
             margin-bottom: 8px;
         }
-        
-        input, textarea, select {
+
+        input,
+        textarea,
+        select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -19,19 +21,24 @@
         textarea {
             height: 8em;
         }
-    
+
     }
-        
+
+    .error {
+        color: var(--Error);
+        margin: 0;
+    }
+
     .primary-button {
         align-self: flex-end;
         margin-top: 20px;
     }
-    
+
     .footer {
         display: flex;
         flex-flow: row;
         gap: 8px;
-        justify-content: end;    
+        justify-content: end;
         align-items: center;
 
         .spacer {

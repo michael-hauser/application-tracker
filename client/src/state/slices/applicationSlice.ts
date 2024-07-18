@@ -168,6 +168,10 @@ const applicationSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
+      .addCase(addApplication.pending, (state) => {
+        state.status = 'loading';
+        state.error = '';
+      })
       .addCase(addApplication.fulfilled, (state, action: PayloadAction<Application>) => {
         state.applications.push(action.payload);
         state.error = '';
@@ -175,6 +179,14 @@ const applicationSlice = createSlice({
 
         //Update Statistics
         state.statistics = updateStatistics(state);
+      })
+      .addCase(addApplication.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(updateApplication.pending, (state) => {
+        state.status = 'loading';
+        state.error = '';
       })
       .addCase(updateApplication.fulfilled, (state, action: PayloadAction<Application>) => {
         const index = state.applications.findIndex(app => app._id === action.payload._id);
@@ -187,6 +199,14 @@ const applicationSlice = createSlice({
             state.statistics = updateStatistics(state);
           }
       })
+      .addCase(updateApplication.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(deleteApplication.pending, (state) => {
+        state.status = 'loading';
+        state.error = '';
+      })
       .addCase(deleteApplication.fulfilled, (state, action: PayloadAction<string>) => {
         state.applications = state.applications.filter(app => app._id !== action.payload);
         state.filteredApplications = applyApplicationsFilter(state.filter, state.applications);
@@ -194,6 +214,10 @@ const applicationSlice = createSlice({
 
         //Update Statistics
         state.statistics = updateStatistics(state);
+      })
+      .addCase(deleteApplication.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
       });
   },
 });
