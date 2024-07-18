@@ -1,24 +1,25 @@
-export const parseSalary = (salary: string | undefined) => {
+export const parseSalary = (salary: string | undefined): number => {
   if (!salary) return 0;
 
-  // Remove non-numeric characters except for range indicators
-  const cleaned = salary.replace(/[^\d\-.kK]/g, '');
+  const isHourly = (value: string) => /\/?hr$|\/?h$/i.test(value);
+  const toAnnual = (hourly: number) => hourly * 40 * 52;
 
-  // Split ranges
-  const parts = cleaned.split(/[-–]/).map(part => part.trim());
+  const parseValue = (value: string): number => {
+      value = value.replace(/[$,/yr]/g, '').toLowerCase().trim();
+      if (value.endsWith('k')) value = (parseFloat(value) * 1000).toString();
+      return parseFloat(value);
+  };
 
-  // Convert parts to numbers
-  const values = parts.map(part => {
-    if (part.toLowerCase().includes('k')) {
-      return parseFloat(part) * 1000;
-    }
-    return parseFloat(part);
-  });
+  const parseRange = (value: string): number => {
+      const [min, max] = value.split('-').map(parseValue);
+      return (min + max) / 2;
+  };
 
-  // Return the average if range, otherwise the single value
-  if (values.length === 2) {
-    return (values[0] + values[1]) / 2;
+  if (salary.includes('-')) {
+      const rangeAverage = parseRange(salary);
+      return isHourly(salary) ? toAnnual(rangeAverage) : rangeAverage;
   }
 
-  return values[0] || 0;
+  const value = parseValue(salary);
+  return isHourly(salary) ? toAnnual(value) : value;
 };
