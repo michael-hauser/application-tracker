@@ -4,15 +4,12 @@
     "description": "",
     "scripts": {
       "serve": "NODE_ENV=production node ./server/dist/server.js",
+      "install": "cd ./client && npm ci && cd ../server && npm ci",
       "build": "npm run build-frontend && npm run build-server && npm run copy-frontend",
-      "build-frontend": "NODE_ENV=production cd ./client && npm ci --cache .npm --prefer-offline && npm run build",
+      "build-frontend": "NODE_ENV=production cd ./client && npm run build",
+      "build-server": "NODE_ENV=production cd ./server && npm run build",
       "copy-frontend": "mkdir -p ./server/dist/build && cp -R ./client/build/. ./server/dist/build",
-      "build-server": "NODE_ENV=production cd ./server && npm ci --cache .npm --prefer-offline && npm run build",
-      "init-database": "NODE_ENV=production cd ./server && tsc && node dist/tools/initProdDatabase.js",
-
-      "build-docker": "npm run build-frontend-docker && npm run build-server-docker && npm run copy-frontend",
-      "build-frontend-docker": "NODE_ENV=production cd ./client && npm run build",
-      "build-server-docker": "NODE_ENV=production cd ./server && npm run build"
+      "init-database": "NODE_ENV=production cd ./server && tsc && node dist/tools/initProdDatabase.js"
     },
     "author": "",
     "license": "ISC"
