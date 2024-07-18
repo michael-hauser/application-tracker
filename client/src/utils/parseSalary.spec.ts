@@ -5,6 +5,10 @@ describe('parseSalary', () => {
         expect(parseSalary("")).toBe(0);
     });
 
+    it('should return 0 for input "n/a"', () => {
+        expect(parseSalary("")).toBe(0);
+    });
+
     it('should return 100000 for input "100000"', () => {
         expect(parseSalary("100000")).toBe(100000);
     });

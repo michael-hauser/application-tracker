@@ -22,7 +22,7 @@ const ApplicationEditor: React.FC = () => {
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
-        if(stages.length === 0) dispatch(fetchStagesIfNeeded());
+        if (stages.length === 0) dispatch(fetchStagesIfNeeded());
 
         if (selectedApplication) {
             setApplicationData(selectedApplication);
@@ -49,9 +49,10 @@ const ApplicationEditor: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
+        let newValue = value;
         setApplicationData({
             ...applicationData,
-            [name]: value,
+            [name]: newValue,
         });
         setIsDirty(true);
     };
@@ -64,17 +65,19 @@ const ApplicationEditor: React.FC = () => {
         setIsDirty(true);
     };
 
-    const  handleSave = async () => {
+    const handleSave = async () => {
         let result;
+        let isFulfilled = false;
         setIsSaving(true);
-
         if (applicationData && mode === 'edit' && isDirty) {
             result = await dispatch(updateApplication(applicationData));
+            isFulfilled = updateApplication.fulfilled.match(result);
         } else if (applicationData && mode === 'add') {
-            result = await dispatch(addApplication(applicationData))
+            result = await dispatch(addApplication(applicationData));
+            isFulfilled = addApplication.fulfilled.match(result);
         } else return;
 
-        if (updateApplication.fulfilled.match(result)) {
+        if (isFulfilled) {
             setIsDirty(false);
             setIsSaving(false);
             dispatch(closeEditor());
@@ -89,24 +92,32 @@ const ApplicationEditor: React.FC = () => {
             setIsDeleting(true);
             dispatch(deleteApplication(applicationData._id)).then(() => {
                 setIsDeleting(false);
-                dispatch(closeEditor())
+                dispatch(closeEditor());
             });
         }
-    }
+    };
 
     const handleClose = () => {
         setIsDirty(false);
         dispatch(closeEditor());
-    }
+    };
 
     const stageOptions = stages.map(stage => ({
         value: stage._id,
         label: stage.name,
     }));
 
+    const getHeader = () => {
+        if (mode === 'add') {
+            return 'Add Application';
+        } else {
+            return <a href={applicationData.url} target="_blank" rel="noreferrer">{applicationData.company} - {applicationData.role}</a>;
+        }
+    };
+
     return (
         <div className={styles.applicationEditor}>
-            <h1>{mode === 'add' ? 'Add Application' : 'Edit Application'}</h1>
+            <h1>{getHeader()}</h1>
             {error && <div className={styles.error}>{error}</div>}
             <div className={styles.formGroup}>
                 <label>Company</label>
