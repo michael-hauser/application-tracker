@@ -20,6 +20,7 @@ const ApplicationEditor: React.FC = () => {
     const [isDirty, setIsDirty] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [headerText, setHeaderText] = useState('');
 
     useEffect(() => {
         if (stages.length === 0) dispatch(fetchStagesIfNeeded());
@@ -107,17 +108,16 @@ const ApplicationEditor: React.FC = () => {
         label: stage.name,
     }));
 
-    const getHeader = () => {
-        if (mode === 'add') {
-            return 'Add Application';
-        } else {
-            return <a href={applicationData.url} target="_blank" rel="noreferrer">{applicationData.company} - {applicationData.role}</a>;
-        }
+    const getHeader = (app: Application) => {
+        if (mode === 'add') return 'Add Application';
+        const headerText = `${app.company} - ${app.role}`;
+        const isUrlValid = app.url && app.url.startsWith("http");
+        return isUrlValid ? <a href={app.url} target="_blank" rel="noreferrer">{headerText}</a> : headerText;
     };
 
     return (
         <div className={styles.applicationEditor}>
-            <h1>{getHeader()}</h1>
+            <h1>{getHeader(applicationData)}</h1>
             {error && <div className={styles.error}>{error}</div>}
             <div className={styles.formGroup}>
                 <label>Company</label>
