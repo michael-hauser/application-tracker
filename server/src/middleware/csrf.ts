@@ -8,6 +8,10 @@ const COOKIE_OPTIONS = {
   secure: false,
 };
 
+if(process.env.NODE_ENV === "production") {
+  COOKIE_OPTIONS.secure = true;
+}
+
 // In production, ensure you're using cors and helmet and have proper configuration.
 const { invalidCsrfTokenError, generateToken, doubleCsrfProtection } =
   doubleCsrf({
