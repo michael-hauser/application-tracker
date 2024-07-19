@@ -12,9 +12,7 @@ A MERN stack application for tracking and managing job applications.
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [API Endpoints](#api-endpoints)
-    - [Authentication](#authentication)
-    - [Applications](#applications)
+  - [Production](#production)
   - [Testing](#testing)
   - [Technologies Used](#technologies-used)
   - [License](#license)
@@ -35,10 +33,9 @@ A MERN stack application for tracking and managing job applications.
    npm install
    ```
 
-3. Create a `.env` file in the `server` directory and add the following environment variables:
+3. Create a `.env` file in the `server` directory (and the same one in the `/` directory for production) and add the following environment variables:
    ```plaintext
    MONGO_URI=
-   appName=
    JWT_SECRET=
    PORT=
    CLIENT_ORIGIN=
@@ -47,13 +44,14 @@ A MERN stack application for tracking and managing job applications.
    SESSION_SECRET=
    ```
 
-4. Create a `.env` file in the `client` directory and add the following environment variables:
+4. Update a `.env.development` and `.env.production` file in the `client` directory and add the following environment variables:
    ```plaintext
    HOST=
    PORT=
+   REACT_APP_SERVER_URL=
    ```
 
-4. Start the development servers:
+5. Start the development servers:
    ```bash
    # In the server directory
    npm start
@@ -64,22 +62,21 @@ A MERN stack application for tracking and managing job applications.
 
 ## Usage
 
-- Open your browser and navigate to `http://localhost:3000` to access the application.
+- Open your browser and navigate to `http://localhost:PORT` to access the application.
 
-## API Endpoints
+## Production
 
-### Authentication
+In the `/` directory, (make sure `./client/.env.production` and `./.env` are configured correctly)
 
-- `POST /auth/register`: Register a new user.
-- `POST /auth/login`: Login a user.
+   ```bash
+   npm install
 
-### Applications
+   npm run build
 
-- `GET /applications`: Get all applications for the authenticated user.
-- `GET /applications/:id`: Get a single application by ID.
-- `POST /applications`: Create a new application.
-- `PUT /applications/:id`: Update an existing application.
-- `DELETE /applications/:id`: Delete an application.
+   npm run serve
+   # or
+   pm2 start .ecosystem.config.js
+   ```
 
 ## Testing
 
