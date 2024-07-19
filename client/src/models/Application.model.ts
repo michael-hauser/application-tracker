@@ -14,4 +14,5 @@ export interface Application {
     dateApplied?: Date;
     user: string;
     comments?: string;
+    jobDescription?: string;
 }

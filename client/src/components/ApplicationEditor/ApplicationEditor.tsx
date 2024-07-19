@@ -21,6 +21,7 @@ const ApplicationEditor: React.FC = () => {
     const [isDirty, setIsDirty] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [activeTab, setActiveTab] = useState<'details' | 'jobDescription' | 'letter' | 'notes'>('details'); 
 
     useEffect(() => {
         if (stages.length === 0) dispatch(fetchStagesIfNeeded());
@@ -124,78 +125,107 @@ const ApplicationEditor: React.FC = () => {
                 </button>
             </div>
             {error && <div className={styles.error}>{error}</div>}
-            <div className={styles.formGroup}>
-                <label>Company</label>
-                <input
-                    type="text"
-                    name="company"
-                    value={applicationData.company}
-                    onChange={handleChange}
-                    autoFocus
-                />
+            <div className={styles.tabs}>
+                <div className={`${styles.tab} ${activeTab === 'details' ? styles.active : ''}`} onClick={
+                    () => setActiveTab('details')
+                }>Details</div>
+                <div className={`${styles.tab} ${activeTab === 'jobDescription' ? styles.active : ''}`} onClick={
+                    () => setActiveTab('jobDescription')
+                }>Description</div>
+                <div className={`${styles.tab} ${activeTab === 'notes' ? styles.active : ''}`} onClick={
+                    () => setActiveTab('notes')
+                }>Notes</div>
             </div>
-            <div className={styles.formGroup}>
-                <label>Role</label>
-                <input
-                    type="text"
-                    name="role"
-                    value={applicationData.role}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className={styles.formGroup}>
-                <label>URL</label>
-                <input
-                    type="text"
-                    name="url"
-                    value={applicationData.url}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className={styles.formGroup}>
-                <label>Location</label>
-                <input
-                    type="text"
-                    name="location"
-                    value={applicationData.location}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className={styles.formGroup}>
-                <label>Salary</label>
-                <input
-                    type="text"
-                    name="salary"
-                    value={applicationData.salary || ''}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className={styles.formGroup}>
-                <label>Stage</label>
-                <Select
-                    value={stageOptions.find(option => option.value === applicationData.stage._id)}
-                    onChange={handleStageChange}
-                    options={stageOptions}
-                />
-            </div>
-            <div className={styles.formGroup}>
-                <label>Rank</label>
-                <input
-                    type="number"
-                    name="rank"
-                    min={1}
-                    max={5}
-                    value={applicationData.rank}
-                    onChange={handleChange}
-                />
-            </div>
-            <div className={styles.formGroup}>
-                <label>Comments</label>
-                <textarea
-                    name="comments"
-                    value={applicationData.comments || ''}
-                    onChange={handleChange}
-                />
+            <div className={styles.tabContent}>
+                <div className={`${activeTab === 'details' ? '' : styles.hidden} fill`}>
+                    <div className={styles.formGroup}>
+                        <label>Company</label>
+                        <input
+                            type="text"
+                            name="company"
+                            value={applicationData.company}
+                            onChange={handleChange}
+                            autoFocus
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Role</label>
+                        <input
+                            type="text"
+                            name="role"
+                            value={applicationData.role}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>URL</label>
+                        <input
+                            type="text"
+                            name="url"
+                            value={applicationData.url}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Location</label>
+                        <input
+                            type="text"
+                            name="location"
+                            value={applicationData.location}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Salary</label>
+                        <input
+                            type="text"
+                            name="salary"
+                            value={applicationData.salary || ''}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Stage</label>
+                        <Select
+                            value={stageOptions.find(option => option.value === applicationData.stage._id)}
+                            onChange={handleStageChange}
+                            options={stageOptions}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Rank</label>
+                        <input
+                            type="number"
+                            name="rank"
+                            min={1}
+                            max={5}
+                            value={applicationData.rank}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className={`${activeTab === 'jobDescription' ? '' : styles.hidden} ${styles.fill}`}>
+                    <div className={styles.formGroup}>
+                        <label style={{ display: 'none'}}>Job description</label>
+                        <textarea
+                            name="jobDescription"
+                            className={styles.notes}
+                            value={applicationData.jobDescription || ''}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+                <div className={`${activeTab === 'notes' ? '' : styles.hidden} ${styles.fill}`}>
+                    <div className={styles.formGroup}>
+                        <label style={{ display: 'none'}}>Notes</label>
+                        <textarea
+                            name="comments"
+                            className={styles.notes}
+                            value={applicationData.comments || ''}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
             </div>
             <div className={styles.footer}>
                 {mode === 'edit' && (
