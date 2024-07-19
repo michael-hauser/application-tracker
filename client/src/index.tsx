@@ -6,16 +6,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.scss';
 import SvgDefs from './styles/SvgDefs';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <SvgDefs />
-      <App />
-    </Provider>
+    <ErrorBoundary fallback={<ErrorPage />}>
+      <Provider store={store}>
+        <SvgDefs />
+        <App />
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 
