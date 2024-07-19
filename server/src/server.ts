@@ -19,8 +19,18 @@ const PORT = process.env.PORT;
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+  process.env.CLIENT_ORIGIN2, 
+  process.env.CLIENT_ORIGIN2
+];
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN,
+  origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+          callback(null, true);
+      } else {
+          callback(new Error('Origin not allowed by CORS'));
+      }
+  },
   credentials: true,
 }));
 app.use(nocache());
