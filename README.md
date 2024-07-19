@@ -1,5 +1,7 @@
 # Application Tracker
 
+https://applicationtrackerapp.org/
+
 ![Project Thumbnail](./app-thumbnail.png)
 
 A MERN stack application for tracking and managing job applications.
@@ -94,7 +96,7 @@ Run tests using Jest and Supertest:
 
 - **Frontend**: React, Typescript, SCSS Modules
 - **Backend**: Node.js, Express, MongoDB, Mongoose
-- **Authentication**: JWT
+- **Authentication / Security**: JWT, csrf-csrf
 - **Testing**: Jest, Supertest
 - **State Management**: React-Redux
 
