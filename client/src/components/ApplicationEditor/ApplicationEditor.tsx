@@ -8,6 +8,7 @@ import { addApplication, closeEditor, deleteApplication, updateApplication } fro
 import { fetchStagesIfNeeded, selectStages } from '../../state/slices/stageSlice';
 import { Stage } from '../../models/Stage.model';
 import Progress from '../../lib/progress/Progress';
+import Icon from '../../lib/icon/Icon';
 
 const ApplicationEditor: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -20,7 +21,6 @@ const ApplicationEditor: React.FC = () => {
     const [isDirty, setIsDirty] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
-    const [headerText, setHeaderText] = useState('');
 
     useEffect(() => {
         if (stages.length === 0) dispatch(fetchStagesIfNeeded());
@@ -35,7 +35,7 @@ const ApplicationEditor: React.FC = () => {
                 url: '',
                 location: '',
                 salary: undefined,
-                stage: stages[0], // Default to the first stage
+                stage: stages[0],
                 rank: 0,
                 user: '',
                 dateModified: new Date(),
@@ -117,7 +117,12 @@ const ApplicationEditor: React.FC = () => {
 
     return (
         <div className={styles.applicationEditor}>
-            <h1>{getHeader(applicationData)}</h1>
+            <div className={styles.header}>
+                <h1>{getHeader(applicationData)}</h1>
+                <button className="tertiary-button" onClick={handleClose}>
+                    <Icon icon='cross' />
+                </button>
+            </div>
             {error && <div className={styles.error}>{error}</div>}
             <div className={styles.formGroup}>
                 <label>Company</label>
@@ -126,6 +131,7 @@ const ApplicationEditor: React.FC = () => {
                     name="company"
                     value={applicationData.company}
                     onChange={handleChange}
+                    autoFocus
                 />
             </div>
             <div className={styles.formGroup}>

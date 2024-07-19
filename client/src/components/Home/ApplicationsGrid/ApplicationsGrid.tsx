@@ -7,6 +7,7 @@ import { openEditorEdit, setSelectedApplication } from '../../../state/slices/ap
 import { RootState } from '../../../state/store';
 import ApplicationEditor from '../../ApplicationEditor/ApplicationEditor';
 import Sidebar from '../../../lib/sidebar/Sidebar';
+import Stars from '../../../lib/Stars/Stars';
 
 const ApplicationsGrid = () => {
     const dispatch = useDispatch();
@@ -63,7 +64,7 @@ const ApplicationsGrid = () => {
                         <div className={styles.tableCell}>
                             <div className={styles.badge} style={{ background: getStageColor(a.stage)}}>{a.stage.name}</div>
                         </div>
-                        <div className={`${styles.tableCell} ${styles.hideOnMobile}`}>{a.rank}</div>
+                        <div className={`${styles.tableCell} ${styles.hideOnMobile}`}>{<Stars rank={a.rank} />}</div>
                     </div>
                 ))}
             </div>

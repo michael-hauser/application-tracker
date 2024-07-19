@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './Icon.module.scss'
 
 interface IconProps {
@@ -13,4 +13,4 @@ const Icon: React.FC<IconProps> = ({ icon }) => {
     );
 };
 
-export default Icon;
+export default memo(Icon);

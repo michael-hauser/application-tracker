@@ -1,17 +1,17 @@
 [
     {
-        "name": "Magnifyer",
-        "className": "Magnifyer",
+        "name": "magnifyer",
+        "className": "magnifyer",
         "unicode": "e900"
     },
     {
-        "name": "Arrow_Down",
-        "className": "Arrow_Down",
+        "name": "arrow-down",
+        "className": "arrow-down",
         "unicode": "e901"
     },
     {
-        "name": "Dots",
-        "className": "Dots",
+        "name": "dots",
+        "className": "dots",
         "unicode": "e902"
     },
     {
@@ -20,18 +20,28 @@
         "unicode": "e903"
     },
     {
-        "name": "Magic",
-        "className": "Magic",
+        "name": "magic",
+        "className": "magic",
         "unicode": "e904"
     },
     {
-        "name": "Google",
-        "className": "Google",
+        "name": "google",
+        "className": "google",
         "unicode": "e905"
     },
     {
-        "name": "Loading",
-        "className": "Loading",
+        "name": "loading",
+        "className": "loading",
         "unicode": "e906"
+    },
+    {
+        "name": "star",
+        "className": "star",
+        "unicode": "e907"
+    },
+    {
+        "name": "cross",
+        "className": "cross",
+        "unicode": "e908"
     }
 ]

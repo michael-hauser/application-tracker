@@ -1,0 +1,12 @@
+.stars {
+    display: flex;
+    flex-flow: row;
+    
+    .star {
+        color: transparent;
+
+        &.selected {
+            color: var(--Yellow);
+        }
+    }
+}

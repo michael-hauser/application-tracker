@@ -7,7 +7,7 @@ const COOKIE_OPTIONS = {
   sameSite: true,
   secure: false,
 };
-
+  
 if(process.env.NODE_ENV === "production") {
   COOKIE_OPTIONS.secure = true;
 }

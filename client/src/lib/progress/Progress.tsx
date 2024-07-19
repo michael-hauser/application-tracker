@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './Progress.module.scss'
 
 interface ProgressProps {
@@ -13,4 +13,4 @@ const Progress: React.FC<ProgressProps> = ({ fullScreen }) => {
     );
 };
 
-export default Progress;
+export default memo(Progress);
