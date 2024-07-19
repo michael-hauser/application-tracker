@@ -35,6 +35,7 @@
 
     .menuUserName {
       font-weight: 700;
+      margin-bottom: 8px;
     }
 
     .dropdownItem {
@@ -43,7 +44,8 @@
       border: none;
       cursor: pointer;
       width: 100%;
-      text-align: left;
+      text-align: center;
+      text-decoration: none;
 
       &:hover {
         background-color: var(--Gray5);

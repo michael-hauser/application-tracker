@@ -12,6 +12,7 @@ import styles from './App.module.scss';
 import AuthLayout from './components/Layout/AuthLayout';
 import Progress from './lib/progress/Progress';
 import PageNotFound from './components/PageNotFound/PageNotFound';
+import UserAgreement from './components/UserAgreement/UserAgreement';
 
 const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -36,6 +37,7 @@ const App: React.FC = () => {
             <Route path="/login" element={!user ? <AuthLayout><Login /></AuthLayout> : <Navigate to="/" />} />
             <Route path="/register" element={!user ? <AuthLayout><Register /></AuthLayout> : <Navigate to="/" />} />
             <Route path="/" element={user ? <Layout><Home /></Layout> : <Navigate to="/login" />} />
+            <Route path="/license" element={user ? <Layout><UserAgreement /></Layout> : <Navigate to="/login" />} />
             <Route path="*" element={<PageNotFound />}/>
         </Routes>
       </Router>

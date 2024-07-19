@@ -3,6 +3,7 @@ import LogoutButton from '../logoutButton/logoutButton';
 import { useSelector } from 'react-redux';
 import styles from './UserMenu.module.scss';
 import Avatar from '../../../lib/Avatar/Avatar';
+import { Link } from 'react-router-dom';
 
 interface UserMenuProps { }
 
@@ -44,6 +45,7 @@ const UserMenu: React.FC<UserMenuProps> = () => {
             <Avatar name={user.name} avatarUrl={user.avatarUrl} size="l" />
           </div>
           <span className={styles.menuUserName}>{user.name}</span>
+          <Link to="/license" className={styles.dropdownItem}>User Agreement</Link>
           <LogoutButton />
         </div>
       )}
