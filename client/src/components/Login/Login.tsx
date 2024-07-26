@@ -60,9 +60,10 @@ const Login: React.FC = () => {
           {status === 'loading' ? 'Signing in...' : 'Sign in'}
         </button>
       </form>
-      <p>
+      <div><Link className={styles.forgotPassword} to="/reset-password">Forgot Password</Link></div>
+      <div>
         Don't have an account? <Link to="/register">Register here</Link>
-      </p>
+      </div>
     </div>
   );
 };

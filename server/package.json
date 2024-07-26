@@ -21,6 +21,7 @@
     "@types/cookie-parser": "^1.4.7",
     "@types/express-session": "^1.18.0",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/mailgun-js": "^0.22.18",
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.6",
@@ -31,6 +32,7 @@
     "env": "^0.0.2",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "mailgun-js": "^0.22.0",
     "mongoose": "^8.4.4",
     "nocache": "^4.0.0"
   },

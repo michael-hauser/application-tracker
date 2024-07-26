@@ -13,6 +13,8 @@ import AuthLayout from './components/Layout/AuthLayout';
 import Progress from './lib/progress/Progress';
 import PageNotFound from './components/PageNotFound/PageNotFound';
 import UserAgreement from './components/UserAgreement/UserAgreement';
+import ResetPassword from './components/ResetPassword/ResetPassword';
+import UpdatePassword from './components/ResetPassword/UpdatePassword/UpdatePassword';
 
 const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -36,6 +38,8 @@ const App: React.FC = () => {
         <Routes>
             <Route path="/login" element={!user ? <AuthLayout><Login /></AuthLayout> : <Navigate to="/" />} />
             <Route path="/register" element={!user ? <AuthLayout><Register /></AuthLayout> : <Navigate to="/" />} />
+            <Route path="/reset-password" element={!user ? <AuthLayout><ResetPassword /></AuthLayout> : <Navigate to="/" />} />
+            <Route path="/update-password" element={!user ? <AuthLayout><UpdatePassword /></AuthLayout> : <Navigate to="/" />} />
             <Route path="/" element={user ? <Layout><Home /></Layout> : <Navigate to="/login" />} />
             <Route path="/license" element={user ? <Layout><UserAgreement /></Layout> : <Navigate to="/login" />} />
             <Route path="*" element={<PageNotFound />}/>

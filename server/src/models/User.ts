@@ -11,6 +11,8 @@ export interface IUser extends Document {
     password: string;
     admin: boolean;
     tokens: { token: string }[];
+    resetPasswordToken?: string;
+    resetPasswordExpires?: Date;
 }
 
 /**
@@ -51,7 +53,9 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     admin: { type: Boolean, default: false },
-    tokens: [{ token: { type: String, required: true } }] // Define tokens array in the schema
+    tokens: [{ token: { type: String, required: true } }], // Define tokens array in the schema
+    resetPasswordToken: { type: String, required: false },
+    resetPasswordExpires: { type: Date, required: false },
 });
 
 /**

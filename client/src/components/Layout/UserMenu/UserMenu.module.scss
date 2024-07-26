@@ -15,6 +15,7 @@
 
   .dropdownMenu {
     position: absolute;
+    overflow: hidden;
     top: 40px;
     right: 0;
     background-color: var(--Background);
@@ -26,20 +27,41 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    gap: 8px;
-    padding: 8px;
 
-    .avatarWrap {
+    .menuHeader {
       padding: 8px;
-    }
+      background: var(--PrimaryGradient2);
+      color: var(--FontInverse);
+      width: 100%;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      gap: 8px;
 
-    .menuUserName {
-      font-weight: 700;
-      margin-bottom: 8px;
+      .avatarWrap {
+        padding: 8px;
+      }
+
+      .menuUserDetails {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        gap: 4px;
+
+        .menuUserName {
+          font-weight: 700;
+        }
+
+        .menuUserEmail {
+          font-size: 0.8rem;
+        }
+
+        margin-bottom: 8px;
+      }
     }
 
     .dropdownItem {
-      padding: 8px 16px;
+      padding: 12px 16px;
       background-color: transparent;
       border: none;
       cursor: pointer;

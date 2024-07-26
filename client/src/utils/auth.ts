@@ -30,6 +30,7 @@ export const removeAuthToken = (): void => {
     localStorage.removeItem('token');
     delete axiosInstance.defaults.headers.common['Authorization'];
     removeCsrfToken();
+    getCsrfToken();
 };
 
 export const getCsrfToken = (): Promise<void> => {

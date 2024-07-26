@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { fetchUserProfileAPI, loginUserAPI, looutUserAPI, registerUserAPI } from '../../services/userService';
+import { fetchUserProfileAPI, loginUserAPI, looutUserAPI, registerUserAPI, resetPasswordAPI, updatePasswordAPI } from '../../services/userService';
 import { saveAuthToken, removeAuthToken, isAuthenticated } from '../../utils/auth';
 import { IAuthModel, IUser } from '../../models/User.model';
 import createCustomAsyncThunk from '../../utils/createCustomAsyncThunk';
@@ -38,6 +38,30 @@ export const logoutUser = createCustomAsyncThunk(
   async () => {
     const response = await looutUserAPI();
     return response.data;
+  }
+);
+
+export const resetPassword = createCustomAsyncThunk(
+  'user/resetPassword',
+  async (email: string) => {
+    try {
+      const response = await resetPasswordAPI(email);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to reset password');
+    }
+  }
+);
+
+export const updatePassword = createCustomAsyncThunk(
+  'user/updatePassword',
+  async ({ token, password }: { token: string; password: string }, thunkAPI) => {
+    try {
+      const response = await updatePasswordAPI(token, password);
+      return response.data;
+    } catch (error) {
+      return new Error('Failed to update password');
+    }
   }
 );
 
@@ -115,6 +139,30 @@ export const userSlice = createSlice({
         state.status = 'failed';
         state.error = null;
         if(isAuthenticated()) removeAuthToken();
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.status = 'loading';
+        state.error = '';
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.status = 'idle';
+        state.error = '';
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.status = 'loading';
+        state.error = '';
+      })
+      .addCase(updatePassword.fulfilled, (state) => {
+        state.status = 'idle';
+        state.error = '';
+      })
+      .addCase(updatePassword.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
       });
   },
 });

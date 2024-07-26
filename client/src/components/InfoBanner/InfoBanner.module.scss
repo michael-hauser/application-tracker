@@ -1,0 +1,18 @@
+.banner {
+    background: var(--PrimaryGradient1);
+    width: 100vw;
+    display: flex;
+    padding: 16px;
+    font-size: var(--Heading-font-size);
+    color: var(--FontInverse);
+    align-items: center;
+    justify-content: center;
+
+    a {
+        color: var(--FontInverse);
+    }
+
+    button {
+        margin-left: 16px;
+    }
+}

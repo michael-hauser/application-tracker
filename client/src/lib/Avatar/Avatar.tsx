@@ -5,6 +5,7 @@ interface AvatarProps {
     name: string;
     avatarUrl?: string;
     size?: 's' | 'm' | 'l';
+    border?: boolean;
 }
 
 const getInitials = (name: string) => {
@@ -21,12 +22,12 @@ const getColor = (name: string) => {
     return `hsl(${hue}, 56%, 80%)`;
 };
 
-const Avatar: React.FC<AvatarProps> = ({ name, avatarUrl, size }) => {
+const Avatar: React.FC<AvatarProps> = ({ name, avatarUrl, size, border = false }) => {
 
     const sizeClass = size ? styles[size] : styles.m;
 
     return (
-        <div className={`${styles.avatarWrapper} ${sizeClass}`}>
+        <div className={`${styles.avatarWrapper} ${sizeClass} ${border ? styles.border : ''}`}>
             {avatarUrl ? (
                 <img src={avatarUrl} alt="User Avatar" className={styles.avatar} />
             ) : (
